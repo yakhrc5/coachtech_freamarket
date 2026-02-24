@@ -1,0 +1,369 @@
+/* public/css/item-detail.css */
+
+.product-detail {
+    padding: 40px 0 80px;
+}
+
+.product-detail__inner {
+    max-width: 1380px;
+    margin: 0 auto;
+    padding: 0 30px;
+}
+
+.product-detail__grid {
+    display: flex;
+    gap: 90px;
+    align-items: flex-start;
+}
+
+/* 左：画像 */
+.product-detail__media {
+    flex: 0 0 600px;
+}
+
+.product-detail__image-box {
+    position: relative;
+    width: 600px;
+    height: 600px;
+    background: #d9d9d9;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-detail__sold {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 2px;
+}
+
+.product-detail__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.product-detail__image-placeholder {
+    color: #4b4b4b;
+    font-weight: 700;
+}
+
+/* 右：説明エリア */
+.product-detail__main {
+    flex: 0 1 690px;
+}
+
+.product-detail__title {
+    margin: 0;
+    font-size: 36px;
+    font-weight: 700;
+}
+
+.product-detail__brand {
+    margin: 8px 0 0;
+    font-size: 12px;
+    color: #5f5f5f;
+}
+
+.product-detail__price {
+    margin: 14px 0 0;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.product-detail__price-tax {
+    margin-left: 6px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #4b4b4b;
+}
+
+/* いいね/コメント（アイコン＋数） */
+.product-detail__stats {
+    margin-top: 16px;
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+.product-detail__stat {
+    width: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.product-detail__stat-form {
+    margin: 0;
+}
+
+.product-detail__icon-btn {
+    width: 45px;
+    height: 40px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.product-detail__icon-btn--disabled {
+    cursor: default;
+    opacity: 0.6;
+}
+
+.product-detail__icon {
+    display: block;
+}
+
+.product-detail__icon--heart {
+    width: 45px;
+    height: 40px;
+}
+
+.product-detail__icon--comment {
+    width: 40px;
+    height: 40px;
+}
+
+.product-detail__stat-count {
+    margin: 6px 0 0;
+    font-size: 14px;
+    color: #4b4b4b;
+}
+
+/* 購入ボタン */
+.product-detail__purchase {
+    margin-top: 18px;
+}
+
+.product-detail__purchase-btn {
+    width: 570px;
+    height: 56px;
+    border-radius: 4px;
+    background: #ff5a5a;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+/* セクション */
+.product-detail__section {
+    margin-top: 28px;
+}
+
+.product-detail__section-title {
+    margin: 0 0 10px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.product-detail__text {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #4b4b4b;
+}
+
+/* 商品情報 */
+.product-detail__info {
+    margin: 0;
+}
+
+.product-detail__info-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 10px 16px;
+    align-items: center;
+    margin-top: 12px;
+}
+
+.product-detail__info-label {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.product-detail__info-value {
+    margin: 0;
+}
+
+.product-detail__chips {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.product-detail__chip {
+    background: #d9d9d9;
+    border-radius: 15px;
+    padding: 6px 14px;
+    font-size: 12px;
+}
+
+.product-detail__status {
+    font-size: 14px;
+}
+
+/* コメント */
+.product-detail__comment-title {
+    margin: 10px 0 14px;
+    font-size: 36px;
+    font-weight: 700;
+    color: #5f5f5f;
+}
+
+.comments-list {
+    width: 570px;
+}
+
+.comment-card {
+    margin-top: 14px;
+}
+
+.comment-card__head {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.comment-card__avatar-wrap {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #d9d9d9;
+    flex: 0 0 70px;
+}
+
+.comment-card__avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.comment-card__avatar {
+    width: 100%;
+    height: 100%;
+    background: #d9d9d9;
+}
+
+.comment-card__name {
+    margin: 0;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.comment-card__bubble {
+    margin-top: 10px;
+    width: 570px;
+    background: #e5e5e5;
+    border-radius: 5px;
+    padding: 12px 16px;
+}
+
+.comment-card__text {
+    margin: 0;
+    font-size: 14px;
+    color: #4b4b4b;
+    line-height: 1.6;
+}
+
+.product-detail__empty {
+    margin: 0;
+    font-size: 14px;
+    color: #5f5f5f;
+}
+
+/* コメント送信フォーム */
+.comment-form {
+    margin-top: 18px;
+    width: 570px;
+}
+
+.comment-form__title {
+    margin: 0 0 10px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.comment-form__textarea {
+    width: 100%;
+    border: 1px solid #5f5f5f;
+    padding: 12px;
+    border-radius: 2px;
+}
+
+.comment-form__error {
+    margin: 8px 0 0;
+    font-size: 12px;
+    color: #ff5a5a;
+}
+
+.comment-form__submit {
+    margin-top: 18px;
+    width: 570px;
+    height: 56px;
+    border: none;
+    border-radius: 4px;
+    background: #ff5a5a;
+    color: #ffffff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.comment-form__note {
+    margin: 0;
+    font-size: 14px;
+    color: #5f5f5f;
+}
+
+/* タブレット対応（768-850px） */
+@media (max-width: 850px) {
+    .product-detail__grid {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .product-detail__media {
+        flex: none;
+        width: 100%;
+    }
+
+    .product-detail__image-box {
+        width: 100%;
+        max-width: 600px;
+        height: auto;
+        aspect-ratio: 1 / 1;
+        margin: 0 auto;
+    }
+
+    .product-detail__main {
+        width: 100%;
+        max-width: 690px;
+        margin: 0 auto;
+    }
+
+    .product-detail__purchase-btn,
+    .comment-form,
+    .comment-form__submit,
+    .comments-list,
+    .comment-card__bubble {
+        width: 100%;
+        max-width: 570px;
+    }
+}

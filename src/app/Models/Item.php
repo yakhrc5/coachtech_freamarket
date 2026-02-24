@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Item extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'user_id',
         'condition_id',
@@ -38,7 +40,7 @@ class Item extends Model
     // いいね
     public function likes()
     {
-        return $this->hasMany(Like::class);
+        return $this->belongsToMany(User::class, 'likes')->withTimestamps();
     }
 
     // コメント

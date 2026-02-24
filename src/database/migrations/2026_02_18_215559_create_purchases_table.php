@@ -15,20 +15,16 @@ class CreatePurchasesTable extends Migration
     {
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
-            $table->foreignId('item_id');
 
-            $table->string('payment_method');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('item_id')->constrained()->cascadeOnDelete()->unique(); // 1商品=1購入
+
+            $table->string('payment_method', 50);
             $table->string('postal_code', 8);
             $table->string('address');
             $table->string('building')->nullable();
 
             $table->timestamps();
-
-            $table->unique('item_id'); // 1商品=1購入（Sold判定の根拠）
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
         });
     }
 

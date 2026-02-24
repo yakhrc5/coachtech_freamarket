@@ -1,0 +1,143 @@
+.items-index {
+    width: 100%;
+}
+
+/* タブ（高さ47px） */
+.items-index__tabs {
+    border-bottom: 1px solid #cfcfcf;
+    background: #fff;
+}
+
+.items-index__tabs-inner {
+    max-width: 1512px;
+    margin: 0 auto;
+    padding: 0 69px;
+    height: 47px;
+    display: flex;
+    align-items: center;
+    gap: 48px;
+}
+
+.items-index__tab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 47px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #666;
+    text-decoration: none;
+    position: relative;
+}
+
+.items-index__tab.is-active {
+    color: #ff4d4d;
+}
+
+.items-index__tab.is-active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    background: #ff4d4d;
+}
+
+/* 本文 */
+.items-index__body {
+    background: #fff;
+}
+
+.items-index__body-inner {
+    max-width: 1512px;
+    margin: 0 auto;
+    padding: 32px 69px 64px;
+}
+
+.items-index__empty {
+    font-size: 14px;
+    color: #666;
+}
+
+/* グリッド（3カラム） */
+.items-grid {
+    max-width: 1013px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 60px;
+    row-gap: 48px;
+}
+
+/* カード */
+.item-card {
+    width: 100%;
+}
+
+.item-card__link {
+    display: block;
+    text-decoration: none;
+}
+
+.item-card__image-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: #d9d9d9;
+    overflow: hidden;
+    border-radius: 2px;
+}
+
+.item-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* SOLDバッジ */
+.item-card__sold {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 2px;
+}
+
+.item-card__name {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #000;
+}
+
+/* ページネーション（必要なら後でデザイン寄せ） */
+.items-index__pagination {
+    margin-top: 32px;
+}
+
+/* 画面が狭い時に崩れない最低限（固定幅禁止の方針に合わせる） */
+@media (max-width: 1100px) {
+
+    .items-index__tabs-inner,
+    .items-index__body-inner {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    .items-grid {
+        max-width: none;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 24px;
+        row-gap: 24px;
+    }
+}
+
+@media (max-width: 680px) {
+    .items-grid {
+        grid-template-columns: 1fr;
+    }
+}

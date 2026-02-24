@@ -1,1 +1,6 @@
+# MySQL data (local only)
 docker/mysql/data/
+
+# user uploads only
+src/storage/app/public/profiles/*
+!src/storage/app/public/profiles/.gitignore

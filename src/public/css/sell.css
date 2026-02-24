@@ -1,0 +1,336 @@
+.exhibit {
+    width: 100%;
+    background: #fff;
+}
+
+.exhibit__inner {
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+}
+
+.exhibit__title {
+    margin: 0 0 24px;
+    text-align: center;
+    font-size: 36px;
+    font-weight: 700;
+    color: #000;
+}
+
+.exhibit__flash {
+    margin: 0 0 16px;
+    font-size: 14px;
+    color: #ff5555;
+}
+
+.exhibit__form {
+    width: 100%;
+}
+
+.exhibit__block {
+    margin-bottom: 22px;
+}
+
+.exhibit__label {
+    display: block;
+    margin: 0 0 8px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #000;
+}
+
+.exhibit__subhead {
+    margin: 0 0 12px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #000;
+}
+
+.exhibit__section {
+    margin-top: 18px;
+}
+
+.exhibit__section-head {
+    margin: 22px 0 14px;
+}
+
+.exhibit__section-title {
+    margin: 0 0 10px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #000;
+}
+
+.exhibit__section-title--muted {
+    font-size: 30px;
+    color: #5f5f5f;
+}
+
+.exhibit__divider {
+    width: 100%;
+    height: 1px;
+    background: #5f5f5f;
+}
+
+.exhibit__image-box {
+    width: 100%;
+    height: 150px;
+    border: 1px dashed #5f5f5f;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.exhibit__file-btn {
+    width: 165px;
+    height: 43px;
+    border: 2px solid #ff5555;
+    border-radius: 10px;
+    background: #fff;
+    color: #ff5555;
+    font-size: 15px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.exhibit__file-input {
+    display: none;
+}
+
+.exhibit__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 10px;
+}
+
+.exhibit-chip {
+    display: inline-flex;
+}
+
+.exhibit-chip__input {
+    display: none;
+}
+
+.exhibit-chip__label {
+    height: 32px;
+    padding: 0 16px;
+    border: 2px solid #ff5555;
+    border-radius: 999px;
+    color: #ff5555;
+    font-size: 15px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.exhibit-chip__input:checked+.exhibit-chip__label {
+    background: #ff5555;
+    color: #fff;
+}
+
+.exhibit__select {
+    width: 100%;
+    height: 45px;
+    border: 1.5px solid #b1b1b1;
+    border-radius: 4px;
+    padding: 0 12px;
+    font-size: 14px;
+    background: #fff;
+    color: #000;
+
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    /* 右端の▼と余白 */
+    padding-right: 38px;
+    background-image:
+        linear-gradient(45deg, transparent 50%, #5f5f5f 50%),
+        linear-gradient(135deg, #5f5f5f 50%, transparent 50%);
+    background-position:
+        calc(100% - 18px) 50%,
+        calc(100% - 12px) 50%;
+    background-size: 6px 6px, 6px 6px;
+    background-repeat: no-repeat;
+}
+
+.exhibit__input {
+    width: 100%;
+    height: 45px;
+    border: 1px solid #5f5f5f;
+    border-radius: 4px;
+    padding: 0 12px;
+    font-size: 14px;
+    background: #fff;
+    color: #000;
+}
+
+.exhibit__textarea {
+    width: 100%;
+    min-height: 125px;
+    border: 1px solid #5f5f5f;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-size: 14px;
+    background: #fff;
+    color: #000;
+    resize: vertical;
+}
+
+.exhibit-price {
+    position: relative;
+}
+
+.exhibit-price__prefix {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: 700;
+    font-size: 24px;
+    /* Figma寄せ */
+    line-height: 1;
+    color: #000;
+    pointer-events: none;
+}
+
+.exhibit-price__input {
+    padding-left: 44px;
+    /* ¥の分だけ左余白 */
+}
+.exhibit-price__input::-webkit-outer-spin-button,
+.exhibit-price__input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.exhibit-price__input[type="number"] {
+    -moz-appearance: textfield;
+    /* Firefox */
+}
+.exhibit__error {
+    margin: 6px 0 0;
+    font-size: 12px;
+    color: #ff5555;
+}
+
+.exhibit__actions {
+    margin-top: 22px;
+}
+
+.exhibit__submit {
+    width: 100%;
+    height: 60px;
+    border: none;
+    border-radius: 4px;
+    background: #ff5555;
+    color: #fff;
+    font-size: 26px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* ===== Custom Select (Condition) ===== */
+.cselect {
+    width: 100%;
+    position: relative;
+}
+
+.cselect__trigger {
+    width: 100%;
+    height: 45px;
+    border: 1.5px solid #b1b1b1;
+    border-radius: 4px;
+    background: #fff;
+    color: #000;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.cselect__trigger:focus,
+.cselect__trigger:focus-visible {
+    outline: none;
+}
+
+/* 開いた時も枠色変えない */
+.cselect.is-open .cselect__trigger {
+    border-color: #b1b1b1;
+    box-shadow: none;
+}
+
+.cselect__trigger-arrow {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid #5f5f5f;
+}
+
+/* ▼ ドロップダウン本体：枠線不要、背景はグレー、角丸だけ */
+.cselect__panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 100%;
+    z-index: 20;
+
+    border: none;
+    /* ← 枠線不要 */
+    background: #b1b1b1;
+    border-radius: 6px;
+    /* 外側は軽く丸める（Figma寄せ） */
+    padding: 10px;
+    /* 内側余白（角丸が映える） */
+    display: none;
+}
+
+.cselect.is-open .cselect__panel {
+    display: block;
+}
+
+/* 選択肢ボタン：通常は透明背景、白文字 */
+.cselect__option {
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: #fff;
+    text-align: left;
+
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    cursor: pointer;
+    border-radius: 6px;
+    /* ← ホバー時に角丸で背景つける */
+}
+
+/* チェックは通常非表示 */
+.cselect__check {
+    width: 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+}
+
+/* ✅ “ホバー風” 表示は is-active で統一 */
+.cselect__option.is-active {
+    background: #5599eb;
+}
+
+.cselect__option.is-active .cselect__check {
+    opacity: 1;
+}

@@ -1,0 +1,283 @@
+/* =========================
+   Base
+========================= */
+:root {
+    --container: 1100px;
+    --black: #111;
+    --gray: #e5e5e5;
+    --text: #111;
+    --muted: #666;
+    --accent: #ff5a5a;
+    --accent-dark: #ff3f3f;
+    --radius: 6px;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    font-family: "Inter", "Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, system-ui,
+        -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--text);
+    background: #fff;
+}
+
+/* utility */
+.container {
+    width: min(var(--container), calc(100% - 40px));
+    margin: 0 auto;
+}
+
+/* =========================
+   Header
+========================= */
+.header {
+    background: #000;
+    display: flex;
+}
+
+.header__inner {
+    max-width: 1512px;
+    height: 80px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.header__logo {
+    margin: 0;
+    flex: 0 0 auto;
+}
+
+/* aタグの装飾はクラスで制御 */
+.header__logo-link {
+    display: inline-flex;
+    align-items: center;
+    height: 80px;
+    text-decoration: none;
+}
+
+/* imgタグの装飾はクラスで制御 */
+.header__logo-img {
+    height: 32px;
+    width: auto;
+    display: block;
+}
+
+/* 検索 */
+.header__search {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: center;
+}
+
+.header__search-input {
+    width: 520px;
+    max-width: 100%;
+    height: 40px;
+    padding: 0 14px;
+    border-radius: 4px;
+    border: 1px solid #d9d9d9;
+    background: #fff;
+    font-size: 14px;
+}
+
+/* 右メニュー */
+.header__nav {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.header__nav-item {
+    display: inline-flex;
+    align-items: center;
+}
+
+.header__link {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 14px;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.header__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    padding: 0 14px;
+    border-radius: 4px;
+    background: #fff;
+    color: #000;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+/* =========================
+   Main
+========================= */
+.main {
+    padding: 40px 0 80px;
+}
+
+/* =========================
+   Common components
+   （全ページで使い回す）
+========================= */
+
+/* 見出し */
+.page-title {
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+    margin: 0 0 30px;
+}
+
+/* フォーム */
+.form {
+    width: min(520px, calc(100% - 40px));
+    margin: 0 auto;
+}
+
+.form__group {
+    margin-bottom: 18px;
+}
+
+.form__label {
+    display: block;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.input,
+.textarea,
+.select {
+    width: 100%;
+    border: 1px solid #cfcfcf;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-size: 14px;
+    outline: none;
+}
+
+.textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.form__help {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+}
+
+.form__error {
+    font-size: 12px;
+    color: #d12;
+    margin-top: 6px;
+}
+
+/* ボタン */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 44px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.btn--primary {
+    background: var(--accent);
+    color: #fff;
+}
+
+.btn--primary:hover {
+    background: var(--accent-dark);
+}
+
+.btn--outline {
+    background: #fff;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+}
+
+/* タブ（おすすめ/マイリスト等） */
+.tabs {
+    display: flex;
+    gap: 24px;
+    padding: 10px 0 14px;
+    border-bottom: 1px solid #bdbdbd;
+    width: min(var(--container), calc(100% - 40px));
+    margin: 0 auto 30px;
+}
+
+.tabs__link {
+    font-size: 14px;
+    font-weight: 700;
+    color: #888;
+    text-decoration: none;
+}
+
+.tabs__link.is-active {
+    color: var(--accent);
+}
+
+/* カードグリッド（商品一覧・マイページのカード） */
+.grid {
+    width: min(var(--container), calc(100% - 40px));
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+}
+
+@media (max-width: 980px) {
+    .grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 720px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 460px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.card__img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: #d9d9d9;
+    border-radius: 2px;
+    display: grid;
+    place-items: center;
+    color: #444;
+    font-weight: 700;
+}
+
+.card__name {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #111;
+}

@@ -1,0 +1,206 @@
+.mypage {
+    width: 100%;
+    background: #fff;
+}
+
+.mypage__inner {
+    max-width: 1512px;
+    margin: 0 auto;
+    padding: 0 69px 80px;
+}
+
+/* ユーザー情報（枠） */
+.mypage-user {
+    height: 150px;
+    display: grid;
+    grid-template-columns: 150px 1fr 310px;
+    align-items: center;
+    column-gap: 56px;
+    padding-top: 28px;
+    padding-bottom: 28px;
+}
+
+.mypage-user__avatar {
+    width: 150px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mypage-user__avatar-placeholder {
+    width: 150px;
+    height: 150px;
+    border-radius: 999px;
+    background: #d9d9d9;
+}
+
+.mypage-user__avatar-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 999px;
+    object-fit: cover;
+    display: block;
+}
+
+.mypage-user__name {
+    font-size: 36px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.mypage-user__edit-btn {
+    width: 310px;
+    height: 59px;
+    border: 2px solid #ff5555;
+    border-radius: 10px;
+    color: #ff5555;
+    font-weight: 700;
+    font-size: 26px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* タブ */
+.mypage-tabs {
+    border-bottom: 1px solid #cfcfcf;
+    height: 47px;
+    display: flex;
+    align-items: center;
+    gap: 56px;
+}
+
+.mypage-tabs__tab {
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: #5f5f5f;
+    text-decoration: none;
+    position: relative;
+}
+
+.mypage-tabs__tab.is-active {
+    color: #ff0000;
+}
+
+.mypage-tabs__tab.is-active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -7px;
+    height: 2px;
+    background: #ff0000;
+}
+
+/* 商品一覧 */
+.mypage-items {
+    padding-top: 32px;
+}
+
+.mypage-items__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 290px);
+    gap: 56px 56px;
+}
+
+.mypage-items__empty {
+    margin-top: 24px;
+    font-size: 14px;
+    color: #666;
+}
+
+/* カード */
+.mypage-card__link {
+    display: block;
+    text-decoration: none;
+}
+
+.mypage-card__image-wrap {
+    width: 290px;
+    height: 290px;
+    border-radius: 4px;
+    background: #d9d9d9;
+    position: relative;
+    overflow: hidden;
+}
+
+.mypage-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.mypage-card__sold {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 2px;
+}
+
+.mypage-card__name {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #000;
+}
+
+/* 崩れにくく */
+@media (max-width: 1400px) {
+    .mypage__inner {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    .mypage-items__grid {
+        grid-template-columns: repeat(3, 290px);
+        justify-content: start;
+    }
+}
+
+@media (max-width: 1050px) {
+    .mypage-user {
+        grid-template-columns: 120px 1fr;
+        grid-template-rows: auto auto;
+        height: auto;
+        row-gap: 16px;
+    }
+
+    .mypage-user__avatar,
+    .mypage-user__avatar-placeholder,
+    .mypage-user__avatar-img {
+        width: 120px;
+        height: 120px;
+    }
+
+    .mypage-user__edit-btn {
+        grid-column: 1 / -1;
+        width: 100%;
+    }
+
+    .mypage-items__grid {
+        grid-template-columns: repeat(2, 290px);
+    }
+}
+
+@media (max-width: 680px) {
+    .mypage-items__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .mypage-card__image-wrap {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1 / 1;
+    }
+}
