@@ -28,7 +28,7 @@
                         name="postal_code"
                         class="address-form__input"
                         value="{{ old('postal_code', $address['postal_code'] ?? '') }}"
-                        placeholder="例）123-4567">
+                        placeholder="">
 
                     @error('postal_code')
                     <p class="address-form__error">{{ $message }}</p>
@@ -44,7 +44,7 @@
                         name="address"
                         class="address-form__input"
                         value="{{ old('address', $address['address'] ?? '') }}"
-                        placeholder="例）東京都〇〇区〇〇 1-2-3">
+                        placeholder="">
 
                     @error('address')
                     <p class="address-form__error">{{ $message }}</p>
@@ -60,7 +60,7 @@
                         name="building"
                         class="address-form__input"
                         value="{{ old('building', $address['building'] ?? '') }}"
-                        placeholder="例）〇〇マンション 101">
+                        placeholder="">
                     @error('building')
                     <p class="address-form__error">{{ $message }}</p>
                     @enderror

@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             ConditionsSeeder::class,
             CategoriesSeeder::class,
             ItemsSeeder::class,
+            PaymentMethodsSeeder::class,
         ]);
     }
 }

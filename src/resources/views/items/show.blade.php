@@ -21,7 +21,7 @@
                         alt="商品画像">
 
                     @if (!empty($item->purchase))
-                    <span class="product-detail__sold">SOLD</span>
+                    <span class="badge-sold">SOLD</span>
                     @endif
 
                     @else
@@ -30,14 +30,14 @@
                 </div>
             </div>
 
-            {{-- 右：商品説明エリア（幅690） --}}
+            {{-- 右：商品説明エリア--}}
+            {{-- いいね --}}
             <div class="product-detail__main">
+                {{-- 商品名 --}}
                 <h1 class="product-detail__title">{{ $item->name }}</h1>
-
-                <p class="product-detail__brand">
-                    {{ $item->brand ?? 'ブランド名' }}
-                </p>
-
+                {{-- ブランド名 --}}
+                <p class="product-detail__brand">{{ $item->brand }}</p>
+                {{-- 販売価格 --}}
                 <p class="product-detail__price">
                     ¥{{ number_format($item->price) }}
                     <span class="product-detail__price-tax">(税込)</span>
@@ -58,12 +58,12 @@
                             </button>
                         </form>
                         @else
-                        <div class="product-detail__icon-btn product-detail__icon-btn--disabled" aria-hidden="true">
+                        <a href="{{ route('login') }}" class="product-detail__icon-btn " aria-label="ログインしていいねする">
                             <img
                                 class="product-detail__icon product-detail__icon--heart"
                                 src="{{ asset('images/icons/heart-default.png') }}"
                                 alt="いいね">
-                        </div>
+                        </a>
                         @endauth
                         <p class="product-detail__stat-count">{{ $item->likes_count }}</p>
                     </div>
@@ -80,7 +80,7 @@
                     </div>
                 </div>
 
-                {{-- 購入ボタン（FN019） --}}
+                {{-- 購入ボタン --}}
                 <div class="product-detail__purchase">
                     @if (!empty($item->purchase))
                     <div class="product-detail__purchase-btn product-detail__purchase-btn--sold" aria-disabled="true">
@@ -124,7 +124,7 @@
                     </dl>
                 </section>
 
-                {{-- コメント一覧（FN017-9〜11） --}}
+                {{-- コメント一覧 --}}
                 <section class="product-detail__section">
                     <h2 class="product-detail__comment-title">コメント({{ $item->comments_count }})</h2>
 
@@ -155,7 +155,7 @@
                         @endforelse
                     </div>
 
-                    {{-- コメント送信（FN020） --}}
+                    {{-- コメント送信 --}}
                     <div class="comment-form">
                         <h3 class="comment-form__title">商品へのコメント</h3>
 

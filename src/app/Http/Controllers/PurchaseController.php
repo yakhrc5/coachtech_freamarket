@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PurchaseRequest;
 use App\Models\Item;
 use App\Models\Purchase;
+use App\Models\PaymentMethod;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Stripe\Checkout\Session as CheckoutSession;
 use Stripe\Stripe;
+
 
 class PurchaseController extends Controller
 {
@@ -30,7 +32,9 @@ class PurchaseController extends Controller
         // 配送先：セッションに変更住所があればそれを優先、なければプロフィール
         $shipping = $this->resolveShipping($item, $user);
 
-        return view('purchase.show', compact('item', 'shipping'));
+        $paymentMethods = PaymentMethod::orderBy('id')->get();
+
+        return view('purchase.show', compact('item', 'shipping', 'paymentMethods'));
     }
 
     public function store(PurchaseRequest $request, Item $item): RedirectResponse
@@ -50,10 +54,12 @@ class PurchaseController extends Controller
         // 支払い方法だけバリデーション
         $data = $request->validated();
 
+        $paymentMethod = PaymentMethod::findOrFail($data['payment_method_id']);
+
         // 配送先：セッション優先 → プロフィール
         $shipping = $this->resolveShipping($item, $user);
 
-        // もし万一プロフィール住所が空なら弾く（通常はありえないけど安全策）
+        // もし万一プロフィール住所が空なら弾く
         if (empty($shipping['postal_code']) || empty($shipping['address'])) {
             return redirect()
                 ->route('purchase.show', $item)
@@ -61,12 +67,12 @@ class PurchaseController extends Controller
         }
 
         // コンビニ払いは「支払う」クリック時点で在庫確保（sold扱い）にする
-        if ($data['payment_method'] === 'コンビニ支払い') {
+        if ($paymentMethod->name === 'コンビニ支払い') {
             if (!Purchase::where('item_id', $item->id)->exists()) {
                 Purchase::create([
                     'user_id' => $user->id,
                     'item_id' => $item->id,
-                    'payment_method' => $data['payment_method'],
+                    'payment_method_id' => $data['payment_method_id'],
                     'postal_code' => $shipping['postal_code'],
                     'address' => $shipping['address'],
                     'building' => $shipping['building'] ?? null,
@@ -77,7 +83,7 @@ class PurchaseController extends Controller
             session()->forget("purchase.shipping.item_{$item->id}");
         }
         // 支払い方法 → Stripeのpayment_method_types
-        $paymentMethodTypes = $data['payment_method'] === 'コンビニ支払い'
+        $paymentMethodTypes = $data['payment_method_id'] === 1
             ? ['konbini']
             : ['card'];
 
@@ -102,7 +108,8 @@ class PurchaseController extends Controller
             'metadata' => [
                 'user_id' => (string) $user->id,
                 'item_id' => (string) $item->id,
-                'payment_method' => $data['payment_method'],
+                'payment_method_id' => $paymentMethod->id,
+                'payment_method_name' => $paymentMethod->name,
                 'postal_code' => $shipping['postal_code'] ?? '',
                 'address' => $shipping['address'] ?? '',
                 'building' => $shipping['building'] ?? '',

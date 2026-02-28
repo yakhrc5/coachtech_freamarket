@@ -237,7 +237,7 @@
             root.classList.add('is-open');
             trigger.setAttribute('aria-expanded', 'true');
 
-            // ✅ 選択済みなら、その行を“初期ホバー状態”にする
+            // 選択済みなら、その行を“初期ホバー状態”にする
             const selectedBtn = getSelectedButton();
             if (selectedBtn) setActive(selectedBtn);
         };
@@ -251,7 +251,7 @@
             root.classList.contains('is-open') ? close() : open();
         });
 
-        // ✅ マウスが当たった行をアクティブ化（=ホバー見た目）
+        // マウスが当たった行をアクティブ化（=ホバー見た目）
         optionsWrap.addEventListener('mouseover', (e) => {
             const btn = e.target.closest('.cselect__option');
             if (!btn) return;

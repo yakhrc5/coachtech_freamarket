@@ -1,6 +1,4 @@
-/* =========================
-   Base
-========================= */
+/* 全体 */
 :root {
     --container: 1100px;
     --black: #111;
@@ -24,15 +22,12 @@ body {
     background: #fff;
 }
 
-/* utility */
 .container {
     width: min(var(--container), calc(100% - 40px));
     margin: 0 auto;
 }
 
-/* =========================
-   Header
-========================= */
+/* ヘッダー */
 .header {
     background: #000;
     display: flex;
@@ -53,7 +48,6 @@ body {
     flex: 0 0 auto;
 }
 
-/* aタグの装飾はクラスで制御 */
 .header__logo-link {
     display: inline-flex;
     align-items: center;
@@ -61,7 +55,6 @@ body {
     text-decoration: none;
 }
 
-/* imgタグの装飾はクラスで制御 */
 .header__logo-img {
     height: 32px;
     width: auto;
@@ -123,17 +116,12 @@ body {
     text-decoration: none;
 }
 
-/* =========================
-   Main
-========================= */
+/* main */
 .main {
     padding: 40px 0 80px;
 }
 
-/* =========================
-   Common components
-   （全ページで使い回す）
-========================= */
+/* 共通 */
 
 /* 見出し */
 .page-title {
@@ -280,4 +268,17 @@ body {
     margin-top: 10px;
     font-size: 13px;
     color: #111;
+}
+
+/* 共通：SOLDバッジ */
+.badge-sold {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(233, 2, 2, 0.75);
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 2px;
 }

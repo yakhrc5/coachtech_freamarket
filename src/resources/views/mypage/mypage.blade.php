@@ -54,7 +54,7 @@
                                 class="mypage-card__image">
 
                             @if (!empty($item->purchase))
-                            <span class="mypage-card__sold">SOLD</span>
+                            <span class="badge-sold">SOLD</span>
                             @endif
                         </div>
                         <p class="mypage-card__name">{{ $item->name }}</p>
@@ -74,7 +74,7 @@
                                 src="{{ Storage::url($item->image_path) }}"
                                 alt="{{ $item->name }}"
                                 class="mypage-card__image">
-                            <span class="mypage-card__sold">SOLD</span>
+                            <span class="badge-sold">SOLD</span>
                         </div>
                         <p class="mypage-card__name">{{ $item->name }}</p>
                     </a>

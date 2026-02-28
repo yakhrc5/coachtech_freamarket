@@ -60,11 +60,11 @@
     color: #666;
 }
 
-/* グリッド（3カラム） */
+/* グリッド */
 .items-grid {
     max-width: 1013px;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     column-gap: 60px;
     row-gap: 48px;
 }
@@ -95,31 +95,18 @@
     display: block;
 }
 
-/* SOLDバッジ */
-.item-card__sold {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    background: rgba(0, 0, 0, 0.75);
-    color: #fff;
-    font-weight: 700;
-    font-size: 12px;
-    padding: 6px 10px;
-    border-radius: 2px;
-}
-
 .item-card__name {
     margin-top: 10px;
     font-size: 14px;
     color: #000;
 }
 
-/* ページネーション（必要なら後でデザイン寄せ） */
+/* ページネーション */
 .items-index__pagination {
     margin-top: 32px;
 }
 
-/* 画面が狭い時に崩れない最低限（固定幅禁止の方針に合わせる） */
+/* 画面が狭い時に崩れない */
 @media (max-width: 1100px) {
 
     .items-index__tabs-inner,

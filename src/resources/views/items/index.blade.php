@@ -44,7 +44,7 @@
                                 class="item-card__image">
 
                             @if (!empty($item->purchase))
-                            <span class="item-card__sold">SOLD</span>
+                            <span class="badge-sold">SOLD</span>
                             @endif
                         </div>
 

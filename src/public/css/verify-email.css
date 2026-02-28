@@ -1,18 +1,14 @@
-/* メール認証誘導画面 */
-
 .verify {
     padding-top: 180px;
-    /* 画面の見た目で後から微調整OK */
 }
 
 .verify__container {
     width: 720px;
-    /* Figma: メッセージ枠が 720 */
     margin: 0 auto;
     text-align: center;
 }
 
-/* メッセージ（Figma: Inter / Bold / 24 / 行間100% / 幅720 高さ58） */
+/* メッセージ */
 .verify__message {
     margin: 0 auto 28px;
     font-size: 24px;
@@ -26,7 +22,6 @@
     align-items: center;
     justify-content: center;
     width: 220px;
-    /* 見た目でOK。必要ならFigma値に寄せる */
     height: 44px;
     border-radius: 6px;
     border: 1px solid #888;
@@ -36,7 +31,7 @@
     font-weight: 700;
 }
 
-/* 再送リンク（Figma: 257×53.29 / Inter Regular 20 / 中央） */
+/* 再送リンク */
 .verify__resend-form {
     margin-top: 22px;
 }

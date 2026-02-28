@@ -171,6 +171,8 @@ class ItemsSeeder extends Seeder
                     DB::table('category_item')->insert([
                         'item_id' => $itemId,
                         'category_id' => $categoryId,
+                        'created_at' => $now,
+                        'updated_at' => $now,
                     ]);
                 }
             }

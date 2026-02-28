@@ -196,7 +196,6 @@
     transform: translateY(-50%);
     font-weight: 700;
     font-size: 24px;
-    /* Figma寄せ */
     line-height: 1;
     color: #000;
     pointer-events: none;
@@ -204,7 +203,6 @@
 
 .exhibit-price__input {
     padding-left: 44px;
-    /* ¥の分だけ左余白 */
 }
 .exhibit-price__input::-webkit-outer-spin-button,
 .exhibit-price__input::-webkit-inner-spin-button {
@@ -214,8 +212,8 @@
 
 .exhibit-price__input[type="number"] {
     -moz-appearance: textfield;
-    /* Firefox */
 }
+
 .exhibit__error {
     margin: 6px 0 0;
     font-size: 12px;
@@ -238,7 +236,7 @@
     cursor: pointer;
 }
 
-/* ===== Custom Select (Condition) ===== */
+/* Custom Select */
 .cselect {
     width: 100%;
     position: relative;
@@ -286,12 +284,9 @@
     z-index: 20;
 
     border: none;
-    /* ← 枠線不要 */
     background: #b1b1b1;
     border-radius: 6px;
-    /* 外側は軽く丸める（Figma寄せ） */
     padding: 10px;
-    /* 内側余白（角丸が映える） */
     display: none;
 }
 
@@ -314,7 +309,6 @@
 
     cursor: pointer;
     border-radius: 6px;
-    /* ← ホバー時に角丸で背景つける */
 }
 
 /* チェックは通常非表示 */
@@ -326,7 +320,6 @@
     opacity: 0;
 }
 
-/* ✅ “ホバー風” 表示は is-active で統一 */
 .cselect__option.is-active {
     background: #5599eb;
 }

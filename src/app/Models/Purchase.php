@@ -12,7 +12,7 @@ class Purchase extends Model
     protected $fillable = [
         'user_id',
         'item_id',
-        'payment_method',
+        'payment_method_id',
         'postal_code',
         'address',
         'building',
@@ -26,5 +26,10 @@ class Purchase extends Model
     public function item()
     {
         return $this->belongsTo(Item::class);
+    }
+
+    public function paymentMethod()
+    {
+        return $this->belongsTo(PaymentMethod::class);
     }
 }

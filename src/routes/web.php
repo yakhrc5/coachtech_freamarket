@@ -29,12 +29,11 @@ Route::get('/item/{item_id}', [ItemController::class, 'show'])->name('items.show
 | Auth only (verified じゃなくてOK)
 |--------------------------------------------------------------------------
 | ※ verification.notice は未認証ユーザーも見る必要があるので verified は付けない
-| ※ ここは既にFortifyのルートがあるなら「view差し替え」だけでOK
 */
 Route::middleware('auth')->group(function () {
-    // 例：認証誘導画面を自作viewに差し替える場合
+    // 認証誘導画面を差し替え
     Route::get('/email/verify', function () {
-        // 認証完了後にプロフィールへ戻したい場合
+        // 認証完了後にプロフィールへ遷移させるため、意図的に intended を上書き
         session(['url.intended' => route('profile.edit')]);
 
         return view('auth.verify-email');
@@ -47,7 +46,7 @@ Route::middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 | Protected (login + verified required)
 |--------------------------------------------------------------------------
-| ※ “認証が必要なアクション” はここに入れるのが要件的に安全
+| ※ “認証が必要なアクション” は全てここにまとめる
 */
 Route::middleware(['auth', 'verified'])->group(function () {
 

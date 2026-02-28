@@ -122,11 +122,11 @@
 }
 
 .mypage-card__image-wrap {
+    position: relative;
     width: 290px;
     height: 290px;
     border-radius: 4px;
     background: #d9d9d9;
-    position: relative;
     overflow: hidden;
 }
 
@@ -137,25 +137,12 @@
     display: block;
 }
 
-.mypage-card__sold {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    background: rgba(0, 0, 0, 0.75);
-    color: #fff;
-    font-weight: 700;
-    font-size: 12px;
-    padding: 6px 10px;
-    border-radius: 2px;
-}
-
 .mypage-card__name {
     margin-top: 10px;
     font-size: 14px;
     color: #000;
 }
 
-/* 崩れにくく */
 @media (max-width: 1400px) {
     .mypage__inner {
         padding-left: 24px;

@@ -60,7 +60,7 @@ class StripeSuccessController extends Controller
                 return redirect('/')->with('message', '決済情報が不正です。');
             }
 
-            // ★ここ重要：item が実在するかチェック（外部キーや整合の確認）
+            // item が実在するかチェック（外部キーや整合の確認）
             $itemExists = Item::whereKey($itemId)->exists();
             Log::info('[stripe-success] item check', ['item_id' => $itemId, 'exists' => $itemExists]);
 
@@ -75,7 +75,7 @@ class StripeSuccessController extends Controller
                 Purchase::create([
                     'user_id' => $userId,
                     'item_id' => $itemId,
-                    'payment_method' => (string) ($meta['payment_method'] ?? ''),
+                    'payment_method_id' => (string) ($meta['payment_method_id'] ?? ''),
                     'postal_code' => (string) ($meta['postal_code'] ?? ''),
                     'address' => (string) ($meta['address'] ?? ''),
                     'building' => (string) ($meta['building'] ?? null),
