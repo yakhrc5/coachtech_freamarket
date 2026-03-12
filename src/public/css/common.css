@@ -381,15 +381,29 @@ body {
    ヘッダー：PC幅微調整
 ============================= */
 @media screen and (min-width: 1400px) and (max-width: 1540px) {
+.header__inner {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        gap: 24px;
+    }
+
     .header__search {
-        flex: 0 0 563px;
+        display: flex;
         justify-content: center;
+        width: 100%;
     }
 
     .header__nav {
         display: flex;
-        flex: 0 0 463px;
+        align-items: center;
+        gap: 18px;
         justify-content: flex-end;
+    }
+
+    .header__search-input {
+        width: 100%;
+        max-width: 500px;
     }
 }
 

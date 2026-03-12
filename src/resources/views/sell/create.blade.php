@@ -128,7 +128,7 @@
                                     data-value="{{ $condition->id }}"
                                     data-label="{{ $condition->name }}"
                                     role="option">
-                                    <span class="exhibit-select__check">✓</span>
+                                    <span class="exhibit-select__check">✔</span>
                                     <span class="exhibit-select__option-label">{{ $condition->name }}</span>
                                 </button>
                                 @endforeach
@@ -211,7 +211,7 @@
                             name="price"
                             class="exhibit__input exhibit-price__input"
                             value="{{ old('price') }}"
-                            min="0"
+                            min="1"
                             step="1">
                     </div>
 

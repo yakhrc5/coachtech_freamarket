@@ -83,7 +83,8 @@
     border-radius: 4px;
     background: #ffffff;
     color: #000000;
-    font-size: 14px;
+    font-size: 16px;
+    font-family: "Inter", sans-serif;
 }
 
 .exhibit__input {
@@ -94,7 +95,7 @@
 .exhibit__textarea {
     min-height: 125px;
     padding: 10px 12px;
-    line-height: 1;
+    line-height: 1.4;
     resize: vertical;
 }
 
@@ -143,11 +144,11 @@
     min-width: 165px;
     height: 43px;
     padding: 0 16px;
-    border: 2px solid #ff5555;
+    border: 2px solid #ff5655;
     border-radius: 10px;
     background: #fff;
-    color: #ff5555;
-    font-size: 14px;
+    color: #ff5655;
+    font-size: 18px;
     font-weight: 700;
     line-height: 1;
     cursor: pointer;
@@ -232,6 +233,9 @@
 
 .exhibit-price__input {
     padding-left: 40px;
+    font-size: 16px;
+    line-height: 1;
+    font-family: "Inter", sans-serif;
 }
 
 .exhibit-price__input::-webkit-outer-spin-button,
@@ -241,7 +245,9 @@
 }
 
 .exhibit-price__input[type="number"] {
+    appearance: textfield;
     -moz-appearance: textfield;
+
 }
 
 /* =========================
@@ -267,7 +273,7 @@
 }
 
 .exhibit-select__trigger-text {
-    font-size: 14px;
+    font-size: 16px;
     line-height: 1.4;
     color: #000;
 }
@@ -288,15 +294,17 @@
 
 .exhibit-select__panel {
     position: absolute;
-    top: calc(100% + 8px);
+    top: 0;
     left: 0;
     z-index: 20;
     display: none;
     width: 100%;
-    padding: 10px;
+    padding: 5px 10px;
     border: none;
-    border-radius: 6px;
-    background: #b1b1b1;
+    border-radius: 5px;
+    background: #636769;
+    border: 1.5px solid #b1b1b1;
+    box-sizing: border-box;
 }
 
 .exhibit-select.is-open .exhibit-select__panel {
@@ -308,11 +316,11 @@
     align-items: center;
     gap: 10px;
     width: 100%;
-    padding: 10px 12px;
+    padding: 4px 0;
     border: none;
-    border-radius: 6px;
+    border-radius: 5px;
     background: transparent;
-    color: #fff;
+    color: #eaeaea;
     text-align: left;
     cursor: pointer;
 }
@@ -323,6 +331,9 @@
     justify-content: center;
     width: 15px;
     opacity: 0;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
 }
 
 .exhibit-select__option-label {
