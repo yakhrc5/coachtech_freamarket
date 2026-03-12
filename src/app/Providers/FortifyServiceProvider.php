@@ -23,7 +23,7 @@ class FortifyServiceProvider extends ServiceProvider
             \App\Http\Requests\LoginRequest::class
         );
 
-        // ✅ 登録後はメール認証誘導画面へ
+        // 登録後はメール認証誘導画面へ
         $this->app->singleton(RegisterResponseContract::class, function () {
             return new class implements RegisterResponseContract {
                 public function toResponse($request)
@@ -33,7 +33,7 @@ class FortifyServiceProvider extends ServiceProvider
             };
         });
 
-        // ✅ 未認証でログインしたら必ず誘導画面へ
+        // 未認証でログインしたら必ず誘導画面へ
         $this->app->singleton(LoginResponseContract::class, LoginResponse::class);
     }
 

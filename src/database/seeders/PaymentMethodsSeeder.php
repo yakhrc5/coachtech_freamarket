@@ -17,8 +17,20 @@ class PaymentMethodsSeeder extends Seeder
         $now = now();
 
         $paymentMethods = [
-            ['name' => 'コンビニ支払い', 'created_at' => $now, 'updated_at' => $now],
-            ['name' => 'カード支払い', 'created_at' => $now, 'updated_at' => $now],
+            [
+                'name' => 'コンビニ支払い',
+                'code' => 'konbini',
+                'stripe_code' => 'konbini',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'name' => 'カード支払い',
+                'code' => 'card',
+                'stripe_code' => 'card',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
         ];
 
         DB::table('payment_methods')->insert($paymentMethods);

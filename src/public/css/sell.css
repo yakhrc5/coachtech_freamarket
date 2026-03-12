@@ -1,26 +1,31 @@
+/* =========================
+   出品画面全体
+========================= */
 .exhibit {
     width: 100%;
-    background: #fff;
+    background: #ffffff;
 }
 
 .exhibit__inner {
     width: 100%;
     max-width: 680px;
     margin: 0 auto;
-    padding: 40px 24px 80px;
+    padding: 10px 0px 80px;
 }
 
 .exhibit__title {
-    margin: 0 0 24px;
+    margin: 0 0 43px;
     text-align: center;
     font-size: 36px;
     font-weight: 700;
+    line-height: 1.4;
     color: #000;
 }
 
 .exhibit__flash {
     margin: 0 0 16px;
     font-size: 14px;
+    line-height: 1.5;
     color: #ff5555;
 }
 
@@ -28,42 +33,22 @@
     width: 100%;
 }
 
-.exhibit__block {
-    margin-bottom: 22px;
-}
-
-.exhibit__label {
-    display: block;
-    margin: 0 0 8px;
-    font-size: 14px;
-    font-weight: 700;
-    color: #000;
-}
-
-.exhibit__subhead {
-    margin: 0 0 12px;
-    font-size: 24px;
-    font-weight: 700;
-    color: #000;
-}
-
+/* =========================
+   セクション
+========================= */
 .exhibit__section {
-    margin-top: 18px;
+    margin-top: 36px;
 }
 
 .exhibit__section-head {
-    margin: 22px 0 14px;
+    margin: 0 0 36px;
 }
 
 .exhibit__section-title {
-    margin: 0 0 10px;
-    font-size: 24px;
-    font-weight: 700;
-    color: #000;
-}
-
-.exhibit__section-title--muted {
+    margin: 0 0 8px;
     font-size: 30px;
+    font-weight: 700;
+    line-height: 1;
     color: #5f5f5f;
 }
 
@@ -73,28 +58,98 @@
     background: #5f5f5f;
 }
 
-.exhibit__image-box {
+.exhibit__block {
+    margin-bottom: 6px;
+}
+
+
+/* =========================
+   ラベル・入力共通
+========================= */
+.exhibit__label {
+    display: block;
+    min-height: 30px;
+    margin: 0 0 8px;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1;
+    color: #000000;
+}
+
+.exhibit__input,
+.exhibit__textarea {
     width: 100%;
-    height: 150px;
-    border: 1px dashed #5f5f5f;
+    border: 1px solid #5f5f5f;
     border-radius: 4px;
+    background: #ffffff;
+    color: #000000;
+    font-size: 14px;
+}
+
+.exhibit__input {
+    height: 45px;
+    padding: 0 12px;
+}
+
+.exhibit__textarea {
+    min-height: 125px;
+    padding: 10px 12px;
+    line-height: 1;
+    resize: vertical;
+}
+
+.exhibit__input:focus,
+.exhibit__textarea:focus,
+.exhibit-select__trigger:focus {
+    outline: none;
+}
+
+/* =========================
+   エラーメッセージ
+========================= */
+
+.exhibit__error-area {
+    min-height: 30px;
+    padding-top: 8px;
+    box-sizing: border-box;
+    font-size: 16px;
+    line-height: 1;
+    color: #ff5555;
+}
+
+.exhibit__error {
+    margin: 0;
+}
+
+/* =========================
+   商品画像
+========================= */
+.exhibit__image-box {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    min-height: 150px;
+    padding: 16px;
+    border: 1px dashed #5f5f5f;
+    border-radius: 4px;
+    background: #fff;
 }
 
 .exhibit__file-btn {
-    width: 165px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 165px;
     height: 43px;
+    padding: 0 16px;
     border: 2px solid #ff5555;
     border-radius: 10px;
     background: #fff;
     color: #ff5555;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    line-height: 1;
     cursor: pointer;
 }
 
@@ -102,10 +157,28 @@
     display: none;
 }
 
+/* =========================
+   カテゴリー
+========================= */
+.exhibit__fieldset {
+    min-width: 0;
+    margin: 0 0 24px;
+    padding: 0;
+    border: none;
+}
+
+.exhibit__fieldset>.exhibit__label {
+    margin: 0 0 20px;
+}
+
 .exhibit__chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px 10px;
+    gap: 35px 20px;
+    width: 100%;
+    padding-left: 10px;
+    box-sizing: border-box;
+    margin-bottom: 5px;
 }
 
 .exhibit-chip {
@@ -117,111 +190,159 @@
 }
 
 .exhibit-chip__label {
-    height: 32px;
-    padding: 0 16px;
-    border: 2px solid #ff5555;
-    border-radius: 999px;
-    color: #ff5555;
-    font-size: 15px;
-    font-weight: 500;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    min-height: 32px;
+    padding: 0 16px;
+    border: 2px solid #ff5655;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #ff5655;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1;
     cursor: pointer;
     user-select: none;
 }
 
 .exhibit-chip__input:checked+.exhibit-chip__label {
-    background: #ff5555;
-    color: #fff;
+    background: #ff5655;
+    color: #ffffff;
 }
 
-.exhibit__select {
-    width: 100%;
-    height: 45px;
-    border: 1.5px solid #b1b1b1;
-    border-radius: 4px;
-    padding: 0 12px;
-    font-size: 14px;
-    background: #fff;
-    color: #000;
-
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-
-    /* 右端の▼と余白 */
-    padding-right: 38px;
-    background-image:
-        linear-gradient(45deg, transparent 50%, #5f5f5f 50%),
-        linear-gradient(135deg, #5f5f5f 50%, transparent 50%);
-    background-position:
-        calc(100% - 18px) 50%,
-        calc(100% - 12px) 50%;
-    background-size: 6px 6px, 6px 6px;
-    background-repeat: no-repeat;
-}
-
-.exhibit__input {
-    width: 100%;
-    height: 45px;
-    border: 1px solid #5f5f5f;
-    border-radius: 4px;
-    padding: 0 12px;
-    font-size: 14px;
-    background: #fff;
-    color: #000;
-}
-
-.exhibit__textarea {
-    width: 100%;
-    min-height: 125px;
-    border: 1px solid #5f5f5f;
-    border-radius: 4px;
-    padding: 10px 12px;
-    font-size: 14px;
-    background: #fff;
-    color: #000;
-    resize: vertical;
-}
-
+/* =========================
+   販売価格
+========================= */
 .exhibit-price {
     position: relative;
 }
 
 .exhibit-price__prefix {
     position: absolute;
-    left: 12px;
     top: 50%;
+    left: 12px;
     transform: translateY(-50%);
-    font-weight: 700;
     font-size: 24px;
+    font-weight: 700;
     line-height: 1;
     color: #000;
     pointer-events: none;
 }
 
 .exhibit-price__input {
-    padding-left: 44px;
+    padding-left: 40px;
 }
+
 .exhibit-price__input::-webkit-outer-spin-button,
 .exhibit-price__input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
     margin: 0;
+    -webkit-appearance: none;
 }
 
 .exhibit-price__input[type="number"] {
     -moz-appearance: textfield;
 }
 
-.exhibit__error {
-    margin: 6px 0 0;
-    font-size: 12px;
-    color: #ff5555;
+/* =========================
+   カスタムドロップダウン
+========================= */
+.exhibit-select {
+    position: relative;
+    width: 100%;
 }
 
+.exhibit-select__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 45px;
+    padding: 0 12px;
+    border: 1px solid #5f5f5f;
+    border-radius: 4px;
+    background: #fff;
+    color: #000;
+    cursor: pointer;
+}
+
+.exhibit-select__trigger-text {
+    font-size: 14px;
+    line-height: 1.4;
+    color: #000;
+}
+
+.exhibit-select__trigger-arrow {
+    width: 0;
+    height: 0;
+    border-top: 8px solid #5f5f5f;
+    border-right: 7px solid transparent;
+    border-left: 7px solid transparent;
+    flex-shrink: 0;
+}
+
+.exhibit-select.is-open .exhibit-select__trigger {
+    border-color: #5f5f5f;
+    box-shadow: none;
+}
+
+.exhibit-select__panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 20;
+    display: none;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background: #b1b1b1;
+}
+
+.exhibit-select.is-open .exhibit-select__panel {
+    display: block;
+}
+
+.exhibit-select__option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: #fff;
+    text-align: left;
+    cursor: pointer;
+}
+
+.exhibit-select__check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 15px;
+    opacity: 0;
+}
+
+.exhibit-select__option-label {
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.exhibit-select__option.is-active {
+    background: #5599eb;
+}
+
+.exhibit-select__option.is-active .exhibit-select__check {
+    opacity: 1;
+}
+
+/* =========================
+   送信ボタン
+========================= */
 .exhibit__actions {
-    margin-top: 22px;
+    margin-top: 80px;
 }
 
 .exhibit__submit {
@@ -233,97 +354,76 @@
     color: #fff;
     font-size: 26px;
     font-weight: 700;
+    line-height: 1;
     cursor: pointer;
 }
 
-/* Custom Select */
-.cselect {
-    width: 100%;
-    position: relative;
+/* =========================
+   タブレット対応
+========================= */
+@media screen and (max-width: 850px) {
+    .exhibit__inner {
+        padding: 40px 24px 72px;
+    }
+
+    .exhibit__title {
+        font-size: 32px;
+    }
+
+    .exhibit__section-title {
+        font-size: 28px;
+    }
+
+    .exhibit__submit {
+        height: 56px;
+        font-size: 24px;
+    }
 }
 
-.cselect__trigger {
-    width: 100%;
-    height: 45px;
-    border: 1.5px solid #b1b1b1;
-    border-radius: 4px;
-    background: #fff;
-    color: #000;
-    padding: 0 12px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-}
+/* =========================
+   スマホ対応
+========================= */
+@media screen and (max-width: 767px) {
+    .exhibit__inner {
+        padding: 32px 16px 64px;
+    }
 
-.cselect__trigger:focus,
-.cselect__trigger:focus-visible {
-    outline: none;
-}
+    .exhibit__title {
+        margin-bottom: 20px;
+        font-size: 28px;
+    }
 
-/* 開いた時も枠色変えない */
-.cselect.is-open .cselect__trigger {
-    border-color: #b1b1b1;
-    box-shadow: none;
-}
+    .exhibit__section {
+        margin-top: 32px;
+    }
 
-.cselect__trigger-arrow {
-    width: 0;
-    height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 6px solid #5f5f5f;
-}
+    .exhibit__section-head {
+        margin-bottom: 20px;
+    }
 
-/* ▼ ドロップダウン本体：枠線不要、背景はグレー、角丸だけ */
-.cselect__panel {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 0;
-    width: 100%;
-    z-index: 20;
+    .exhibit__section-title {
+        font-size: 24px;
+    }
 
-    border: none;
-    background: #b1b1b1;
-    border-radius: 6px;
-    padding: 10px;
-    display: none;
-}
+    .exhibit__label {
+        font-size: 15px;
+    }
 
-.cselect.is-open .cselect__panel {
-    display: block;
-}
+    .exhibit__chips {
+        gap: 8px;
+    }
 
-/* 選択肢ボタン：通常は透明背景、白文字 */
-.cselect__option {
-    width: 100%;
-    border: none;
-    background: transparent;
-    color: #fff;
-    text-align: left;
+    .exhibit-chip__label {
+        padding: 0 12px;
+        font-size: 13px;
+    }
 
-    padding: 10px 12px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    .exhibit__image-box {
+        min-height: 140px;
+    }
 
-    cursor: pointer;
-    border-radius: 6px;
-}
-
-/* チェックは通常非表示 */
-.cselect__check {
-    width: 15px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-}
-
-.cselect__option.is-active {
-    background: #5599eb;
-}
-
-.cselect__option.is-active .cselect__check {
-    opacity: 1;
+    .exhibit__submit {
+        height: 50px;
+        font-size: 22px;
+    }
 }

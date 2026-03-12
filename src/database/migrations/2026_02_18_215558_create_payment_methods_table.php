@@ -16,6 +16,8 @@ class CreatePaymentMethodsTable extends Migration
         Schema::create('payment_methods', function (Blueprint $table) {
             $table->id();
             $table->string('name', 50)->unique();
+            $table->string('code', 50)->unique();
+            $table->string('stripe_code', 50)->unique()->nullable();
             $table->timestamps();
         });
     }

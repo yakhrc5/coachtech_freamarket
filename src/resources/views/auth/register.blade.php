@@ -7,13 +7,14 @@
 @endsection
 
 @section('content')
-<div class="auth">
+<div class="auth auth--register">
     <div class="auth__container">
-        <h2 class="auth__title">会員登録</h2>
+        <h1 class="auth__title">会員登録</h1>
 
         <form method="POST" action="{{ route('register') }}" class="auth__form" novalidate>
             @csrf
 
+            {{-- ユーザー名 --}}
             <div class="auth__field">
                 <label class="auth__label" for="name">ユーザー名</label>
                 <input
@@ -23,13 +24,16 @@
                     class="auth__input"
                     value="{{ old('name') }}"
                     autocomplete="name"
-                    autofocus>
-
-                @error('name')
-                <p class="auth__error">{{ $message }}</p>
-                @enderror
+                    autofocus
+                    required>
+                <div class="auth__error-area">
+                    @error('name')
+                    <p class="auth__error">{{ $message }}</p>
+                    @enderror
+                </div>
             </div>
 
+            {{-- メールアドレス --}}
             <div class="auth__field">
                 <label class="auth__label" for="email">メールアドレス</label>
                 <input
@@ -38,13 +42,16 @@
                     name="email"
                     class="auth__input"
                     value="{{ old('email') }}"
-                    autocomplete="email">
-
-                @error('email')
-                <p class="auth__error">{{ $message }}</p>
-                @enderror
+                    autocomplete="email"
+                    required>
+                <div class="auth__error-area">
+                    @error('email')
+                    <p class="auth__error">{{ $message }}</p>
+                    @enderror
+                </div>
             </div>
 
+            {{-- パスワード --}}
             <div class="auth__field">
                 <label class="auth__label" for="password">パスワード</label>
                 <input
@@ -52,13 +59,16 @@
                     type="password"
                     name="password"
                     class="auth__input"
-                    autocomplete="new-password">
-
-                @error('password')
-                <p class="auth__error">{{ $message }}</p>
-                @enderror
+                    autocomplete="new-password"
+                    required>
+                <div class="auth__error-area">
+                    @error('password')
+                    <p class="auth__error">{{ $message }}</p>
+                    @enderror
+                </div>
             </div>
 
+            {{-- 確認用パスワード --}}
             <div class="auth__field">
                 <label class="auth__label" for="password_confirmation">確認用パスワード</label>
                 <input
@@ -66,15 +76,19 @@
                     type="password"
                     name="password_confirmation"
                     class="auth__input"
-                    autocomplete="new-password">
-
-                @error('password_confirmation')
-                <p class="auth__error">{{ $message }}</p>
-                @enderror
+                    autocomplete="new-password"
+                    required>
+                <div class="auth__error-area">
+                    @error('password_confirmation')
+                    <p class="auth__error">{{ $message }}</p>
+                    @enderror
+                </div>
             </div>
 
-            <button type="submit" class="auth__btn">登録する</button>
+            {{-- 登録ボタン --}}
+            <button type="submit" class="auth__btn auth__btn--register">登録する</button>
 
+            {{-- ログインリンク --}}
             <p class="auth__link">
                 <a href="{{ route('login') }}" class="auth__link-anchor">ログインはこちら</a>
             </p>

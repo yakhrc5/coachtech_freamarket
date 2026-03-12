@@ -16,14 +16,14 @@
 
         {{-- Mailhogへ（開発用） --}}
         <a
-            class="verify__open"
             href="http://localhost:8025"
+            class="verify__open"
             target="_blank"
             rel="noopener">
             認証はこちらから
         </a>
 
-        {{-- 再送（Laravel標準の verification.send を叩く） --}}
+        {{-- 再送 --}}
         <form method="POST" action="{{ route('verification.send') }}" class="verify__resend-form">
             @csrf
 
@@ -33,7 +33,7 @@
         </form>
 
         @if (session('status') === 'verification-link-sent')
-        <p class="verify__status">認証メールを再送しました。</p>
+        <p class="verify__status">認証メールを再送しました</p>
         @endif
     </div>
 </div>

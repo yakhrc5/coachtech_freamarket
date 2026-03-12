@@ -18,8 +18,12 @@ class ItemsSeeder extends Seeder
     {
         $now = now();
 
-        // 出品者（UsersSeederで user_id=1 が存在する前提）
-        $sellerId = 1;
+        // 出品者（UsersSeederで作成された先頭ユーザーを使う）
+        $sellerId = DB::table('users')->orderBy('id')->value('id');
+
+        if (!$sellerId) {
+            throw new \RuntimeException('UsersSeederを先に実行してください。');
+        }
 
         $conditionMap = DB::table('conditions')->pluck('id', 'name');
         $categoryMap  = DB::table('categories')->pluck('id', 'name');

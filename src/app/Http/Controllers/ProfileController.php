@@ -44,9 +44,9 @@ class ProfileController extends Controller
         $user->update($updateData);
 
         if ($request->input('from') === 'mypage') {
-            return redirect()->route('mypage.show');
+            return redirect()->route('mypage.show')->with('success', 'プロフィールを更新しました');
         }
 
-        return redirect()->route('items.index');
+        return redirect()->route('items.index')->with('success', 'プロフィールを更新しました');
     }
 }

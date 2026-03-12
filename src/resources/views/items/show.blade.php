@@ -21,7 +21,7 @@
                         alt="商品画像">
 
                     @if (!empty($item->purchase))
-                    <span class="badge-sold">SOLD</span>
+                    <span class="badge-sold">Sold</span>
                     @endif
 
                     @else

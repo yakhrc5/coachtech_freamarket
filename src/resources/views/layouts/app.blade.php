@@ -17,23 +17,27 @@
 
 <body>
     @php
-    // 認証系は「ロゴのみヘッダー」
-    $isAuthHeader =
-    \Illuminate\Support\Facades\Route::is('register')
-    || \Illuminate\Support\Facades\Route::is('login')
-    || \Illuminate\Support\Facades\Route::is('verification.notice')
-    || \Illuminate\Support\Facades\Route::is('verification.verify');
+    // 認証系画面では「ロゴのみヘッダー」を表示する
+    $isAuthHeader = request()->routeIs(
+    'register',
+    'login',
+    'verification.notice',
+    'verification.verify'
+    );
     @endphp
 
+    {{-- ヘッダー --}}
     <header class="header">
         <div class="header__inner">
-            <h1 class="header__logo">
+            {{-- ロゴ --}}
+            <div class="header__logo">
                 <a href="{{ route('items.index') }}" class="header__logo-link" aria-label="トップへ">
                     <img src="{{ asset('images/logo.png') }}" alt="COACHTECH" class="header__logo-img">
                 </a>
-            </h1>
+            </div>
 
             @unless($isAuthHeader)
+            {{-- 商品検索フォーム --}}
             <form action="{{ route('items.index') }}" method="GET" class="header__search">
                 <input
                     type="text"
@@ -43,6 +47,7 @@
                     placeholder="なにをお探しですか？">
             </form>
 
+            {{-- ナビゲーション --}}
             <nav class="header__nav">
                 @auth
                 <form action="{{ route('logout') }}" method="POST" class="header__nav-item">
@@ -64,7 +69,33 @@
         </div>
     </header>
 
-    <main class="main">
+    {{-- フラッシュメッセージ --}}
+    @if (session('info'))
+    <div class="flash-message flash-message--info">
+        <div class="flash-message__inner">
+            {{ session('info') }}
+        </div>
+    </div>
+    @endif
+
+    @if (session('success'))
+    <div class="flash-message flash-message--success">
+        <div class="flash-message__inner">
+            {{ session('success') }}
+        </div>
+    </div>
+    @endif
+
+    @if (session('error'))
+    <div class="flash-message flash-message--error">
+        <div class="flash-message__inner">
+            {{ session('error') }}
+        </div>
+    </div>
+    @endif
+
+    {{-- メインコンテンツ --}}
+    <main class="layout_main">
         @yield('content')
     </main>
 

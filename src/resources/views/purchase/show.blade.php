@@ -59,6 +59,7 @@
                                             class="cselect__option"
                                             data-value="{{ $paymentMethod->id }}"
                                             data-label="{{ $paymentMethod->name }}"
+                                            data-code="{{ $paymentMethod->code }}"
                                             role="option">
                                             <span class="cselect__check">✓</span>
                                             <span class="cselect__label">{{ $paymentMethod->name }}</span>
@@ -128,6 +129,16 @@
                     <button type="submit" class="purchase-summary__btn">
                         購入する
                     </button>
+
+                    <div class="purchase-note" id="konbiniNote" hidden>
+                        <p class="purchase-note__text">
+                            「購入する」をクリックすると決済画面が表示されます。</P>
+                        <p class="purchase-note__text">
+                            コンビニ支払い時は、支払い番号を控えた後にブラウザの「戻る」でお戻りください。</p>
+                        <p class="purchase-note__text">
+                            購入状態はトップページまたはマイページでご確認ください。</p>
+                    </div>
+
                 </aside>
             </div>
         </form>
@@ -147,6 +158,7 @@
         const optionsWrap = root.querySelector('[data-options]');
         const hiddenInput = document.getElementById('payment_method_id');
         const preview = document.getElementById('paymentMethodPreview');
+        const konbiniNote = document.getElementById('konbiniNote');
 
         const placeholder = root.dataset.placeholder || '選択してください';
 
@@ -173,6 +185,8 @@
                     preview.textContent = placeholder;
                 }
 
+                toggleKonbiniNote(null);
+
                 return;
             }
 
@@ -187,6 +201,8 @@
             if (preview) {
                 preview.textContent = label;
             }
+
+            toggleKonbiniNote(btn);
         };
 
         const getSelectedButton = () => {
@@ -216,6 +232,15 @@
             if (selectedBtn) {
                 setActive(selectedBtn);
             }
+        };
+
+        const toggleKonbiniNote = (btn) => {
+            if (!konbiniNote) {
+                return;
+            }
+
+            const code = btn ? btn.dataset.code : '';
+            konbiniNote.hidden = code !== 'konbini';
         };
 
         // 初期表示（old対応）

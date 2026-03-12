@@ -1,23 +1,51 @@
+/* =============================
+   マイページ
+============================= */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 .mypage {
     width: 100%;
     background: #fff;
 }
 
 .mypage__inner {
+    width: 100%;
     max-width: 1512px;
     margin: 0 auto;
     padding: 0 69px 80px;
+    box-sizing: border-box;
 }
 
-/* ユーザー情報（枠） */
+/* =============================
+   ユーザー情報エリア
+   外側は上下余白、
+   中央の実表示部分を 1017px × 150px にする
+============================= */
+
 .mypage-user {
+    padding: 28px 0;
+}
+
+.mypage-user__inner {
+    width: 100%;
+    max-width: 1017px;
     height: 150px;
+    margin: 0 auto;
     display: grid;
     grid-template-columns: 150px 1fr 310px;
     align-items: center;
     column-gap: 56px;
-    padding-top: 28px;
-    padding-bottom: 28px;
+    box-sizing: border-box;
 }
 
 .mypage-user__avatar {
@@ -28,25 +56,28 @@
     justify-content: center;
 }
 
-.mypage-user__avatar-placeholder {
+.mypage-user__avatar-placeholder,
+.mypage-user__avatar-img {
+    display: block;
     width: 150px;
     height: 150px;
     border-radius: 999px;
+}
+
+.mypage-user__avatar-placeholder {
     background: #d9d9d9;
 }
 
 .mypage-user__avatar-img {
-    width: 150px;
-    height: 150px;
-    border-radius: 999px;
     object-fit: cover;
-    display: block;
 }
 
 .mypage-user__name {
+    margin: 0;
     font-size: 36px;
     font-weight: 700;
-    margin: 0;
+    line-height: 1;
+    color: #000;
 }
 
 .mypage-user__edit-btn {
@@ -54,51 +85,62 @@
     height: 59px;
     border: 2px solid #ff5555;
     border-radius: 10px;
+    background: #fff;
     color: #ff5555;
-    font-weight: 700;
     font-size: 26px;
+    font-weight: 700;
+    line-height: 1;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    box-sizing: border-box;
+    white-space: nowrap;
 }
 
-/* タブ */
+/* =============================
+   タブエリア
+   トップページと同じく
+   全幅の区切り線 + 文字色だけでアクティブ表現
+============================= */
+
 .mypage-tabs {
-    border-bottom: 1px solid #cfcfcf;
+    width: 100vw;
     height: 47px;
+    margin-left: calc(50% - 50vw);
+    padding-left: calc((100vw - min(1512px, 100vw)) / 2 + 129px);
+    padding-right: calc((100vw - min(1512px, 100vw)) / 2 + 69px);
     display: flex;
     align-items: center;
-    gap: 56px;
+    gap: 52px;
+    border-bottom: 2px solid #5f5f5f;
+    background: #fff;
+    box-sizing: border-box;
 }
 
 .mypage-tabs__tab {
+    width: 155px;
     height: 40px;
     display: inline-flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     font-size: 24px;
     font-weight: 700;
+    line-height: 1;
     color: #5f5f5f;
     text-decoration: none;
-    position: relative;
+    white-space: nowrap;
+    box-sizing: border-box;
 }
 
 .mypage-tabs__tab.is-active {
     color: #ff0000;
 }
 
-.mypage-tabs__tab.is-active::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -7px;
-    height: 2px;
-    background: #ff0000;
-}
+/* =============================
+   商品一覧エリア
+============================= */
 
-/* 商品一覧 */
 .mypage-items {
     padding-top: 32px;
 }
@@ -106,16 +148,28 @@
 .mypage-items__grid {
     display: grid;
     grid-template-columns: repeat(4, 290px);
-    gap: 56px 56px;
+    justify-content: space-between;
+    row-gap: 56px;
 }
 
 .mypage-items__empty {
-    margin-top: 24px;
-    font-size: 14px;
+    margin: 24px 0 0;
+    font-size: 16px;
     color: #666;
 }
 
-/* カード */
+/* =============================
+   商品カード
+   トップページと同じサイズ感で統一
+   1カード = 290px × 320px
+   画像   = 290px × 290px
+   商品名 = 290px × 30px
+============================= */
+
+.mypage-card {
+    width: 290px;
+}
+
 .mypage-card__link {
     display: block;
     text-decoration: none;
@@ -123,71 +177,192 @@
 
 .mypage-card__image-wrap {
     position: relative;
-    width: 290px;
+    width: 100%;
     height: 290px;
     border-radius: 4px;
     background: #d9d9d9;
     overflow: hidden;
+    box-sizing: border-box;
 }
 
 .mypage-card__image {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
 }
 
 .mypage-card__name {
-    margin-top: 10px;
-    font-size: 14px;
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+    height: 30px;
+    margin: 0;
+    padding-top: 4px;
+    font-size: 25px;
+    font-weight: 400;
+    line-height: 1;
     color: #000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
 }
 
-@media (max-width: 1400px) {
+/* =============================
+   中間幅対応
+   851px〜1399px
+============================= */
+
+@media screen and (min-width: 851px) and (max-width: 1399px) {
     .mypage__inner {
-        padding-left: 24px;
-        padding-right: 24px;
+        padding: 0 24px 64px;
     }
 
-    .mypage-items__grid {
-        grid-template-columns: repeat(3, 290px);
-        justify-content: start;
-    }
-}
-
-@media (max-width: 1050px) {
     .mypage-user {
-        grid-template-columns: 120px 1fr;
-        grid-template-rows: auto auto;
-        height: auto;
-        row-gap: 16px;
+        padding: 24px 0;
     }
 
-    .mypage-user__avatar,
+    .mypage-user__inner {
+        max-width: 100%;
+        height: auto;
+        grid-template-columns: 120px 1fr 260px;
+        column-gap: 32px;
+    }
+
+    .mypage-user__avatar {
+        width: 120px;
+        height: 120px;
+    }
+
     .mypage-user__avatar-placeholder,
     .mypage-user__avatar-img {
         width: 120px;
         height: 120px;
     }
 
+    .mypage-user__name {
+        font-size: 30px;
+    }
+
     .mypage-user__edit-btn {
-        grid-column: 1 / -1;
+        width: 260px;
+        height: 52px;
+        font-size: 22px;
+    }
+
+    .mypage-tabs {
+        padding-left: 84px;
+        padding-right: 24px;
+        gap: 32px;
+    }
+
+    .mypage-items {
+        padding-top: 24px;
+    }
+
+    .mypage-items__grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 40px 24px;
+    }
+
+    .mypage-card {
         width: 100%;
-    }
-
-    .mypage-items__grid {
-        grid-template-columns: repeat(2, 290px);
-    }
-}
-
-@media (max-width: 680px) {
-    .mypage-items__grid {
-        grid-template-columns: 1fr;
+        min-width: 0;
     }
 
     .mypage-card__image-wrap {
         width: 100%;
         height: auto;
         aspect-ratio: 1 / 1;
+    }
+
+    .mypage-card__name {
+        width: 100%;
+        height: auto;
+        font-size: 20px;
+    }
+}
+
+/* =============================
+   タブレット対応
+   768px〜850px
+============================= */
+
+@media screen and (min-width: 768px) and (max-width: 850px) {
+    .mypage__inner {
+        padding: 0 24px 56px;
+    }
+
+    .mypage-user {
+        padding: 24px 0;
+    }
+
+    .mypage-user__inner {
+        max-width: 100%;
+        height: auto;
+        grid-template-columns: 90px 1fr 220px;
+        align-items: center;
+        column-gap: 20px;
+    }
+
+    .mypage-user__avatar {
+        width: 90px;
+        height: 90px;
+    }
+
+    .mypage-user__avatar-placeholder,
+    .mypage-user__avatar-img {
+        width: 90px;
+        height: 90px;
+    }
+
+    .mypage-user__name {
+        font-size: 24px;
+    }
+
+    .mypage-user__edit-btn {
+        width: 220px;
+        height: 44px;
+        font-size: 18px;
+    }
+
+    .mypage-tabs {
+        height: 44px;
+        padding-left: 48px;
+        padding-right: 24px;
+        gap: 24px;
+    }
+
+    .mypage-tabs__tab {
+        width: 155px;
+        height: 40px;
+        font-size: 20px;
+    }
+
+    .mypage-items {
+        padding-top: 24px;
+    }
+
+    .mypage-items__grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 24px;
+    }
+
+    .mypage-card {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .mypage-card__image-wrap {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1 / 1;
+    }
+
+    .mypage-card__name {
+        width: 100%;
+        height: auto;
+        font-size: 16px;
     }
 }

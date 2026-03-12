@@ -23,7 +23,6 @@ Route::get('/', [ItemController::class, 'index'])->name('items.index');
 // PG05: 商品詳細
 Route::get('/item/{item_id}', [ItemController::class, 'show'])->name('items.show');
 
-
 /*
 |--------------------------------------------------------------------------
 | Auth only (verified じゃなくてOK)
@@ -38,9 +37,7 @@ Route::middleware('auth')->group(function () {
 
         return view('auth.verify-email');
     })->name('verification.notice');
-
 });
-
 
 /*
 |--------------------------------------------------------------------------
@@ -73,5 +70,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/mypage/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/mypage/profile', [ProfileController::class, 'update'])->name('profile.update');
 
+    //Stripe決済成功後にリダイレクトされる受け口（結果確認・完了表示）
     Route::get('/stripe/success', [StripeSuccessController::class, 'success'])->name('stripe.success');
 });

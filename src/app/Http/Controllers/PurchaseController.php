@@ -41,12 +41,13 @@ class PurchaseController extends Controller
     {
         $user = $request->user();
 
+        // 購入者と出品者のIDチェ//
         if ((int) $item->user_id === (int) $user->id) {
             return redirect()
                 ->route('purchase.show', $item)
                 ->withErrors(['purchase' => '自分の商品は購入できません。']);
         }
-
+        // 売り切れチェック
         if ($this->isPurchased($item)) {
             return redirect('/')->with('message', 'この商品は購入済みです。');
         }
@@ -54,41 +55,44 @@ class PurchaseController extends Controller
         // 支払い方法だけバリデーション
         $data = $request->validated();
 
+        // 支払い方法マスタをDBから取得（存在しないIDが送られてきた場合は例外で404）
         $paymentMethod = PaymentMethod::findOrFail($data['payment_method_id']);
 
         // 配送先：セッション優先 → プロフィール
         $shipping = $this->resolveShipping($item, $user);
 
-        // もし万一プロフィール住所が空なら弾く
+        // プロフィール住所が空なら弾く
         if (empty($shipping['postal_code']) || empty($shipping['address'])) {
             return redirect()
                 ->route('purchase.show', $item)
                 ->withErrors(['address' => '配送先住所が未登録です。プロフィールを確認してください。']);
         }
 
-        // コンビニ払いは「支払う」クリック時点で在庫確保（sold扱い）にする
-        if ($paymentMethod->name === 'コンビニ支払い') {
-            if (!Purchase::where('item_id', $item->id)->exists()) {
-                Purchase::create([
-                    'user_id' => $user->id,
-                    'item_id' => $item->id,
-                    'payment_method_id' => $data['payment_method_id'],
-                    'postal_code' => $shipping['postal_code'],
-                    'address' => $shipping['address'],
-                    'building' => $shipping['building'] ?? null,
-                ]);
-            }
+        // 支払い方法取得
+        $paymentMethod = PaymentMethod::findOrFail($data['payment_method_id']);
 
-            // 住所変更セッションを掃除（次回購入時にプロフィール住所を優先させるため）
-            session()->forget("purchase.shipping.item_{$item->id}");
+        // 「購入する」クリック時点で在庫確保（sold扱い）にする
+        if (!Purchase::where('item_id', $item->id)->exists()) {
+            Purchase::create([
+                'user_id' => $user->id,
+                'item_id' => $item->id,
+                'payment_method_id' => $data['payment_method_id'],
+                'postal_code' => $shipping['postal_code'],
+                'address' => $shipping['address'],
+                'building' => $shipping['building'] ?? null,
+            ]);
+
+        // 住所変更セッションを掃除（次回購入時にプロフィール住所を優先させるため）
+        session()->forget("purchase.shipping.item_{$item->id}");
         }
-        // 支払い方法 → Stripeのpayment_method_types
-        $paymentMethodTypes = $data['payment_method_id'] === 1
-            ? ['konbini']
-            : ['card'];
 
+        // Stripeに渡す支払い方法
+        $paymentMethodTypes = [$paymentMethod->stripe_code];
+
+        // Stripeキーを設定
         Stripe::setApiKey(config('services.stripe.secret'));
 
+        // Stripe決済画面に遷移するためのCheckoutSessionを作成
         $session = CheckoutSession::create([
             'mode' => 'payment',
             'payment_method_types' => $paymentMethodTypes,
@@ -103,8 +107,8 @@ class PurchaseController extends Controller
                 ],
                 'quantity' => 1,
             ]],
-
-            // success確定（/stripe/success）で purchases 作成するために必要な情報を metadata に詰める
+            // 購入レコードは store() 時点で作成済み。
+            // Stripe決済画面や成功画面側で参照できるように、購入情報・配送先を metadata に保持
             'metadata' => [
                 'user_id' => (string) $user->id,
                 'item_id' => (string) $item->id,
@@ -115,8 +119,8 @@ class PurchaseController extends Controller
                 'building' => $shipping['building'] ?? '',
             ],
 
-            // successは一覧へ
-            'success_url' => url('/stripe/success?session_id={CHECKOUT_SESSION_ID}'),
+            // 決済結果の確認・完了表示用の戻り先
+            'success_url' => route('stripe.success', ['session_id' => '{CHECKOUT_SESSION_ID}']),
             'cancel_url' => route('purchase.show', $item),
         ]);
 
