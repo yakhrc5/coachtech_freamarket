@@ -1,77 +1,150 @@
+/* =========================================
+   送付先住所変更画面 全体
+========================================= */
 .purchase-address {
     width: 100%;
 }
 
 .purchase-address__inner {
     width: 100%;
-    max-width: 1400px;
+    max-width: 680px;
     margin: 0 auto;
-    padding: 40px 40px 80px;
-}
-
-.purchase-address__head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 20px;
-    margin-bottom: 24px;
 }
 
 .purchase-address__title {
-    font-size: 20px;
+    margin: 8px 0 96px;
+    font-size: 36px;
     font-weight: 700;
+    line-height: 1;
+    text-align: center;
 }
 
-.purchase-address__back {
-    font-size: 14px;
-    font-weight: 400;
-    color: #0073cc;
-    text-decoration: none;
-}
-
-.purchase-address__card {
+/* =========================================
+   フォーム全体
+========================================= */
+.address-form {
     width: 100%;
     max-width: 680px;
-    background: #ffffff;
-    border: 1px solid #b1b1b1;
-    padding: 28px;
+    margin: 0 auto;
 }
 
 .address-form__group {
-    margin-bottom: 18px;
+    width: 100%;
+    margin-bottom: 36px;
 }
 
 .address-form__label {
     display: block;
-    font-size: 14px;
-    font-weight: 700;
     margin-bottom: 8px;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1;
 }
 
 .address-form__input {
     width: 100%;
-    height: 40px;
-    border: 1.5px solid #b1b1b1;
-    border-radius: 5px;
+    min-height: 45px;
     padding: 0 12px;
-    font-size: 14px;
+    border: 1px solid #5f5f5f;
+    border-radius: 4px;
     background: #ffffff;
+    font-size: 18px;
+    box-sizing: border-box;
+}
+
+.address-form__input:focus {
+    outline: none;
+}
+
+.address-form__input:focus-visible {
+    outline: 1px solid #5599eb;
+}
+
+/* =========================================
+   エラー表示
+   エラー有無で高さがずれにくいように枠を確保
+========================================= */
+.address-form__error-area {
+    min-height: 36px;
+    padding-top: 8px;
+    box-sizing: border-box;
 }
 
 .address-form__error {
-    margin-top: 8px;
-    font-size: 14px;
-    color: #ff0000;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.2;
+    color: #ff5555;
 }
 
+/* =========================================
+   送信ボタン
+========================================= */
 .address-form__btn {
     width: 100%;
-    height: 48px;
-    margin-top: 10px;
-    background: #ff5555;
+    height: 60px;
+    margin-top: 24px;
     border: none;
+    border-radius: 5px;
+    background: #ff5555;
     color: #ffffff;
-    font-size: 16px;
+    font-size: 26px;
     font-weight: 700;
     cursor: pointer;
+}
+
+.address-form__btn:hover {
+    opacity: 0.9;
+}
+
+/* =========================================
+   中間幅調整
+========================================= */
+@media (max-width: 1200px) {
+    .purchase-address__inner {
+        padding: 40px 32px 72px;
+    }
+
+    .purchase-address__title {
+        margin-bottom: 40px;
+        font-size: 32px;
+    }
+}
+
+/* =========================================
+   タブレット対応
+   768-850px想定
+========================================= */
+@media (max-width: 850px) {
+    .purchase-address__inner {
+        padding: 32px 24px 64px;
+    }
+
+    .purchase-address__title {
+        margin-bottom: 36px;
+        font-size: 30px;
+    }
+
+    .address-form {
+        max-width: none;
+    }
+
+    .address-form__label {
+        font-size: 20px;
+    }
+
+    .address-form__input {
+        height: 48px;
+        font-size: 15px;
+    }
+
+    .address-form__error {
+        font-size: 14px;
+    }
+
+    .address-form__btn {
+        height: 56px;
+        font-size: 22px;
+    }
 }

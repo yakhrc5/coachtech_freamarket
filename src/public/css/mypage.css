@@ -1,18 +1,6 @@
 /* =============================
    マイページ
 ============================= */
-.visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-}
-
 .mypage {
     width: 100%;
     background: #fff;
@@ -21,7 +9,7 @@
 .mypage__inner {
     width: 100%;
     max-width: 1512px;
-    margin: 0 auto;
+    margin: 10px auto;
     padding: 0 69px 80px;
     box-sizing: border-box;
 }
@@ -107,6 +95,7 @@
 .mypage-tabs {
     width: 100vw;
     height: 47px;
+    margin-top: 40px;
     margin-left: calc(50% - 50vw);
     padding-left: calc((100vw - min(1512px, 100vw)) / 2 + 129px);
     padding-right: calc((100vw - min(1512px, 100vw)) / 2 + 69px);
@@ -142,7 +131,7 @@
 ============================= */
 
 .mypage-items {
-    padding-top: 32px;
+    padding-top: 60px;
 }
 
 .mypage-items__grid {

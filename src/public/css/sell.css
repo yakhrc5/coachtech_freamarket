@@ -256,6 +256,7 @@
 .exhibit-select {
     position: relative;
     width: 100%;
+    font-family: inherit;
 }
 
 .exhibit-select__trigger {
@@ -323,6 +324,7 @@
     color: #eaeaea;
     text-align: left;
     cursor: pointer;
+    font-family: inherit;
 }
 
 .exhibit-select__check {

@@ -55,7 +55,7 @@ class PurchaseRequest extends FormRequest
             if ($this->isBlank($postalCode) || $this->isBlank($address)) {
                 $validator->errors()->add(
                     'shipping',
-                    '配送先住所が未登録です。プロフィールを登録してください。'
+                    "配送先住所が未登録です。\n「変更する」から配送先を入力するか、プロフィールに住所を登録してください。"
                 );
             }
         });
