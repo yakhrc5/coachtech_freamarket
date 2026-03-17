@@ -1,41 +1,27 @@
-# coachtechhフリマ
+# coachtechフリマ
 
-## 環境構築
-**Dockerビルド**
-1. `git clone git@github.com:〇〇〇`
-2. `cd 〇〇〇`
-3. DockerDesktopアプリを立ち上げる
-4. `docker compose up -d --build`
+## アプリ概要
+coachtechフリマは、商品の出品・閲覧・購入ができるフリマアプリです。  
+会員登録、ログイン、メール認証、商品出品、商品詳細表示、いいね、コメント、購入、プロフィール編集などの機能を実装しています。
 
-**Laravel環境構築**
-1. `docker-compose exec php bash`
-2. `composer install`
-3. `cp .env.example .env`「.env.example」ファイルを 「.env」ファイルに命名を変更。または、新しく.envファイルを作成
-4. .envに以下の環境変数を追加
-``` text
-DB_CONNECTION=mysql
-DB_HOST=mysql
-DB_PORT=3306
-DB_DATABASE=laravel_db
-DB_USERNAME=laravel_user
-DB_PASSWORD=laravel_pass
-```
-5. アプリケーションキーの作成
-``` bash
-php artisan key:generate
-```
-6. マイグレーションの実行
-``` bash
-php artisan migrate
-```
-7. シーディングの実行
-``` bash
-php artisan db:seed
-```
+---
 
-## URL
-- 開発環境: http://localhost/
-- phpMyAdmin: http://localhost:8080/
+## 主な機能
+- 会員登録 / ログイン / ログアウト
+- メール認証
+- 商品一覧表示
+- マイリスト表示
+- 商品検索
+- 商品詳細表示
+- いいね機能
+- コメント機能
+- 商品出品機能
+- 商品購入機能
+- 送付先住所変更
+- プロフィール編集
+- 購入商品一覧 / 出品商品一覧表示
+
+---
 
 ## 使用技術(実行環境)
 - PHP 8.1.34
@@ -45,7 +31,112 @@ php artisan db:seed
 - JavaScript（Vanilla JS）
 - Docker / Docker Compose
 - HTML / CSS（Bladeテンプレート）
+- PHPUnit
+- Stripe
+- MailHog
+---
+
+## 環境構築
+
+### Dockerビルド
+1. リポジトリをクローン
+```bash
+git clone git@github.com:〇〇〇/〇〇〇.git
+```
+
+2. 作業ディレクトリに移動
+```bash
+cd 〇〇〇
+```
+
+3. Docker Desktopを起動
+4. Dockerコンテナをビルドして起動
+```bash
+docker compose up -d --build
+```
+
+### Laravel環境構築
+1. PHPコンテナに入る
+```bash
+docker compose exec php bash
+```
+
+2. パッケージをインストール
+```bash
+composer install
+```
+
+3. 「.env.example」ファイルを 「.env」ファイルに命名を変更。
+```bash
+cp .env.example .env
+```
+
+4. アプリケーションキーの作成
+``` bash
+php artisan key:generate
+```
+
+5. シンボリックリンクを作成
+```bash
+php artisan storage:link
+```
+
+6. マイグレーションの実行
+``` bash
+php artisan migrate
+```
+
+7. シーディングの実行
+``` bash
+php artisan db:seed
+```
+
+## Stripe設定について
+購入機能には Stripe を使用しています。
+動作確認にはStripe の公開キー / シークレットキーを設定してください。
+
+``` env
+STRIPE_KEY=your_stripe_public_key
+STRIPE_SECRET=your_stripe_secret_key
+```
+Stripe テストカード番号（公式）
+4242 4242 4242 4242
+
+---
+
+## URL
+- 開発環境: http://localhost/
+- phpMyAdmin: http://localhost:8080/
+- MailHog: http://localhost:8025/
+
+---
+
+## テスト環境構築
+テスト実行時は `.env.testing` の設定を使用します。  
+テスト用データベースとして `flea_market_testing` を利用します。
+
+1. 「.env.testing.example」ファイルを 「.env.testing」ファイルに命名を変更。
+```bash
+cp .env.testing.example .env.testing
+```
+
+2. テスト用データベースを作成
+```bash
+docker compose exec mysql mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS flea_market_testing;"
+```
+
+3. テスト用アプリケーションキーの作成
+``` bash
+php artisan key:generate --env=testing
+```
+
+4. テストの実行
+``` bash
+php artisan test
+```
+
+---
 
 ## ER図
 
-![alt text](er_diagram.png)
+![alt](er_diagram.png)
