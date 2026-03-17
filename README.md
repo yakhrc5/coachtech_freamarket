@@ -66,7 +66,7 @@ docker compose exec php bash
 composer install
 ```
 
-3. 「.env.example」ファイルを 「.env」ファイルに命名を変更。
+3. 「.env」ファイルを作成
 ```bash
 cp .env.example .env
 ```
@@ -115,7 +115,7 @@ Stripe テストカード番号（公式）
 テスト実行時は `.env.testing` の設定を使用します。  
 テスト用データベースとして `flea_market_testing` を利用します。
 
-1. 「.env.testing.example」ファイルを 「.env.testing」ファイルに命名を変更。
+1. 「.env.testing」ファイルを作成
 ```bash
 cp .env.testing.example .env.testing
 ```
