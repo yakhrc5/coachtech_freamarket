@@ -122,7 +122,7 @@ cp .env.testing.example .env.testing
 
 2. テスト用データベースを作成
 ```bash
-docker compose exec mysql mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS flea_market_testing;"
+mysql -h mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS flea_market_testing;"
 ```
 
 3. テスト用アプリケーションキーの作成
