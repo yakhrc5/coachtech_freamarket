@@ -129,24 +129,26 @@ Stripe テストカード番号（公式）
 テスト実行時は `.env.testing` の設定を使用します。  
 テスト用データベースとして `flea_market_testing` を利用します。
 
+※ 以下のコマンドは、プロジェクトルートでホスト側から実行してください。
+
 1. `.env.testing` ファイルを作成
 ```bash
-cp .env.testing.example .env.testing
+cp src/.env.testing.example src/.env.testing
 ```
 
-2. テスト用データベースを作成（ホスト側で実行）
+2. テスト用データベースを作成
 ```bash
- docker compose exec mysql mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS flea_market_testing;"
+docker compose exec mysql mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS flea_market_testing;"
 ```
 
 3. テスト用アプリケーションキーの作成
 ``` bash
-php artisan key:generate --env=testing
+docker compose exec php php artisan key:generate --env=testing
 ```
 
 4. テストの実行
 ``` bash
-php artisan test
+docker compose exec php php artisan test
 ```
 
 ---
