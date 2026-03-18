@@ -94,6 +94,12 @@ php artisan migrate
 php artisan db:seed
 ```
 
+8. storage / bootstrap/cache の権限を設定
+```bash
+chown -R www-data:www-data storage bootstrap/cache
+chmod -R 775 storage bootstrap/cache
+```
+
 ### Stripe設定について
 購入機能には Stripe を使用しています。  
 動作確認には、Stripe の公開キー / シークレットキーを設定してください。
