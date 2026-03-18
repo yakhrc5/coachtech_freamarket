@@ -19,7 +19,7 @@ class PurchaseAddressController extends Controller
 
         // すでに購入済みなら一覧へ（多重購入防止）
         if ($this->isPurchased($item)) {
-            return redirect('/')->with('message', 'この商品は購入済みです。');
+            return redirect('/');
         }
 
         // 初期値：セッションに変更住所があれば優先、なければプロフィール
@@ -35,7 +35,7 @@ class PurchaseAddressController extends Controller
 
         // すでに購入済みなら一覧へ
         if ($this->isPurchased($item)) {
-            return redirect('/')->with('message', 'この商品は購入済みです。');
+            return redirect('/');
         }
 
         $data = $request->validated();
@@ -48,8 +48,7 @@ class PurchaseAddressController extends Controller
         ]);
 
         return redirect()
-            ->route('purchase.show', $item)
-            ->with('message', '配送先住所を更新しました。');
+            ->route('purchase.show', $item);
     }
 
     private function isPurchased(Item $item): bool

@@ -69,31 +69,6 @@
         </div>
     </header>
 
-    {{-- フラッシュメッセージ --}}
-    @if (session('info'))
-    <div class="flash-message flash-message--info">
-        <div class="flash-message__inner">
-            {{ session('info') }}
-        </div>
-    </div>
-    @endif
-
-    @if (session('success'))
-    <div class="flash-message flash-message--success">
-        <div class="flash-message__inner">
-            {{ session('success') }}
-        </div>
-    </div>
-    @endif
-
-    @if (session('error'))
-    <div class="flash-message flash-message--error">
-        <div class="flash-message__inner">
-            {{ session('error') }}
-        </div>
-    </div>
-    @endif
-
     {{-- メインコンテンツ --}}
     <main class="layout_main">
         @yield('content')

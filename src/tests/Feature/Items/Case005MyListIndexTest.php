@@ -1,15 +1,6 @@
 <?php
 
-/**
- * Case005 マイリスト一覧取得
- *
- * 対応要件:
- * - いいねした商品だけが表示される
- * - 購入済み商品は「Sold」と表示される
- * - 未認証の場合は何も表示されない
- */
-
-namespace Tests\Feature\Item;
+namespace Tests\Feature\Items;
 
 use App\Models\Item;
 use App\Models\User;
@@ -21,6 +12,15 @@ use Database\Seeders\UsersSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
+
+/**
+ * Case005 マイリスト一覧取得
+ *
+ * 対応要件:
+ * - いいねした商品だけが表示される
+ * - 購入済み商品は「Sold」と表示される
+ * - 未認証の場合は何も表示されない
+ */
 
 class Case005MyListIndexTest extends TestCase
 {

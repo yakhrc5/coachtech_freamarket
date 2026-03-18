@@ -8,7 +8,6 @@ use App\Models\Purchase;
 use App\Models\PaymentMethod;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Stripe\Checkout\Session as CheckoutSession;
 use Stripe\Stripe;
 
@@ -26,7 +25,7 @@ class PurchaseController extends Controller
 
         // すでに購入済みなら一覧へ（多重購入防止）
         if ($this->isPurchased($item)) {
-            return redirect('/')->with('message', 'この商品は購入済みです。');
+            return redirect('/');
         }
 
         // 配送先：セッションに変更住所があればそれを優先、なければプロフィール
@@ -44,12 +43,11 @@ class PurchaseController extends Controller
         // 購入者と出品者のIDチェ//
         if ((int) $item->user_id === (int) $user->id) {
             return redirect()
-                ->route('purchase.show', $item)
-                ->withErrors(['purchase' => '自分の商品は購入できません。']);
+                ->route('purchase.show', $item);
         }
         // 売り切れチェック
         if ($this->isPurchased($item)) {
-            return redirect('/')->with('message', 'この商品は購入済みです。');
+            return redirect('/');
         }
 
         // 支払い方法だけバリデーション
@@ -64,8 +62,7 @@ class PurchaseController extends Controller
         // プロフィール住所が空なら弾く
         if (empty($shipping['postal_code']) || empty($shipping['address'])) {
             return redirect()
-                ->route('purchase.show', $item)
-                ->withErrors(['address' => '配送先住所が未登録です。プロフィールを確認してください。']);
+                ->route('purchase.show', $item);
         }
 
         // 支払い方法取得

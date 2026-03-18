@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\item;
+namespace Tests\Feature\Items;
 
 use App\Models\Category;
 use App\Models\Comment;
@@ -23,7 +23,7 @@ use Tests\TestCase;
  *    商品情報（カテゴリ、商品の状態）、コメントしたユーザー情報、コメント内容）
  * - 複数選択されたカテゴリが表示される
  */
-class Case007ItemDetailTest extends TestCase
+class Case007ItemShowTest extends TestCase
 {
     use RefreshDatabase;
 

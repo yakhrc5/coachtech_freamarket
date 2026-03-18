@@ -44,8 +44,7 @@ class SellController extends Controller
             $item->categories()->sync($data['category_ids']);
 
             return redirect()
-                ->route('mypage.show')
-                ->with('status', '出品しました');
+                ->route('mypage.show');
         });
     }
 }

@@ -16,13 +16,13 @@
                 <div class="product-detail__panel-inner">
                     <div class="product-detail__media">
                         <div class="product-detail__image-box">
-                            @if(!empty($item->image_path))
+                            @if($item->image_path)
                             <img
                                 class="product-detail__image"
                                 src="{{ Storage::url($item->image_path) }}"
                                 alt="商品画像">
 
-                            @if (!empty($item->purchase))
+                            @if($item->purchase)
                             <span class="badge-sold">Sold</span>
                             @endif
 
@@ -87,7 +87,7 @@
 
                         {{-- 購入ボタン --}}
                         <div class="product-detail__purchase">
-                            @if (!empty($item->purchase))
+                            @if ($item->purchase)
                             <div class="product-detail__purchase-btn product-detail__purchase-btn--sold" aria-disabled="true">
                                 売り切れ
                             </div>
