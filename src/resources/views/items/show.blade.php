@@ -20,7 +20,7 @@
                             <img
                                 class="product-detail__image"
                                 src="{{ Storage::url($item->image_path) }}"
-                                alt="商品画像">
+                                alt="{{ $item->name }}">
 
                             @if($item->purchase)
                             <span class="badge-sold">Sold</span>
@@ -88,11 +88,24 @@
                         {{-- 購入ボタン --}}
                         <div class="product-detail__purchase">
                             @if ($item->purchase)
-                            <div class="product-detail__purchase-btn product-detail__purchase-btn--sold" aria-disabled="true">
+                            {{-- 購入済みの商品は売り切れ表示 --}}
+                            <div
+                                class="product-detail__purchase-btn product-detail__purchase-btn--sold"
+                                aria-disabled="true">
                                 売り切れ
                             </div>
+                            @elseif ($isOwnItem)
+                            {{-- 自分が出品した商品は購入ボタンを表示しない --}}
+                            <div
+                                class="product-detail__purchase-btn product-detail__purchase-btn--own"
+                                aria-disabled="true">
+                                出品した商品です
+                            </div>
                             @else
-                            <a href="{{ route('purchase.show', $item) }}" class="product-detail__purchase-btn">
+                            {{-- 購入可能な商品のみ購入ボタンを表示 --}}
+                            <a
+                                href="{{ route('purchase.show', $item) }}"
+                                class="product-detail__purchase-btn">
                                 購入手続きへ
                             </a>
                             @endif
@@ -162,14 +175,9 @@
                                     @csrf
 
                                     @auth
-                                    <textarea
-                                        name="body"
-                                        class="comment-form__textarea">
-                                    {{ old('body') }}</textarea>
+                                    <textarea name="body" class="comment-form__textarea">{{ old('body') }}</textarea>
                                     @else
-                                    <textarea
-                                        class="comment-form__textarea comment-form__textarea--guest"
-                                        readonly>コメントを送信するにはログインが必要です。</textarea>
+                                    <textarea class="comment-form__textarea comment-form__textarea--guest" readonly>コメントを送信するにはログインが必要です。</textarea>
                                     @endauth
 
                                     <div class="comment-form__error-area">

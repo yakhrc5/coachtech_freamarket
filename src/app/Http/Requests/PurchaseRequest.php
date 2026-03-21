@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Item;
 
 class PurchaseRequest extends FormRequest
 {
@@ -31,9 +32,9 @@ class PurchaseRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'payment_method_id.required' => '支払い方法を選択してください。',
-            'payment_method_id.integer' => '支払い方法の形式が不正です。',
-            'payment_method_id.exists' => '選択した支払い方法は無効です。',
+            'payment_method_id.required' => '支払い方法を選択してください',
+            'payment_method_id.integer' => '支払い方法の形式が不正です',
+            'payment_method_id.exists' => '選択した支払い方法は無効です',
         ];
     }
 
@@ -41,7 +42,8 @@ class PurchaseRequest extends FormRequest
     {
         $validator->after(function ($validator) {
             $user = $this->user();
-            $item = $this->route('item');
+            $itemId = $this->route('item_id');
+            $item = Item::find($itemId);
 
             if (!$user || !$item) {
                 return;
@@ -55,7 +57,7 @@ class PurchaseRequest extends FormRequest
             if ($this->isBlank($postalCode) || $this->isBlank($address)) {
                 $validator->errors()->add(
                     'shipping',
-                    "配送先住所が未登録です。\n「変更する」から配送先を入力するか、プロフィールに住所を登録してください。"
+                    "配送先住所が未登録です\n「変更する」から配送先を入力するか、プロフィールに住所を登録してください"
                 );
             }
         });

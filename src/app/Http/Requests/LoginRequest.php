@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-namespace App\Http\Requests;
-
 class LoginRequest extends \Laravel\Fortify\Http\Requests\LoginRequest
 {
     /**
@@ -28,7 +26,7 @@ class LoginRequest extends \Laravel\Fortify\Http\Requests\LoginRequest
             'password' => ['required'],
         ];
     }
-    public function messages()
+    public function messages(): array
     {
         return [
             'email.required' => 'メールアドレスを入力してください',

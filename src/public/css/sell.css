@@ -22,13 +22,6 @@
     color: #000;
 }
 
-.exhibit__flash {
-    margin: 0 0 16px;
-    font-size: 14px;
-    line-height: 1.5;
-    color: #ff5555;
-}
-
 .exhibit__form {
     width: 100%;
 }

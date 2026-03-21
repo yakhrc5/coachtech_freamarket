@@ -9,14 +9,21 @@
 @section('content')
 <div class="items-index">
     @php
+    // 現在のタブを取得（未指定ならおすすめ）
     $activeTab = request('tab', 'recommend');
+
+    // 検索キーワードを取得
     $keyword = request('keyword');
 
+    // おすすめタブ用のURLパラメータ
+    // keyword がある場合だけ引き継ぐ
     $recommendParams = [];
     if ($keyword !== null && $keyword !== '') {
     $recommendParams['keyword'] = $keyword;
     }
 
+    // マイリストタブ用のURLパラメータ
+    // tab=mylist を付けたうえで、keyword がある場合はそれも引き継ぐ
     $mylistParams = ['tab' => 'mylist'];
     if ($keyword !== null && $keyword !== '') {
     $mylistParams['keyword'] = $keyword;
@@ -45,9 +52,6 @@
 
     <div class="items-index__body">
         <div class="items-index__body-inner">
-            @if ($items->isEmpty())
-            <p class="items-index__empty">商品がありません</p>
-            @else
             <div class="items-grid">
                 @foreach ($items as $item)
                 <article class="item-card">
@@ -70,11 +74,7 @@
                 </article>
                 @endforeach
             </div>
-
-            <div class="items-index__pagination">
-                {{ $items->links('vendor.pagination.app-pagination') }}
-            </div>
-            @endif
         </div>
     </div>
-    @endsection
+</div>
+@endsection

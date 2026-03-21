@@ -255,7 +255,8 @@
 }
 
 /* 売り切れ時 */
-.product-detail__purchase-btn--sold {
+.product-detail__purchase-btn--sold,
+.product-detail__purchase-btn--own {
     opacity: 0.7;
     cursor: not-allowed;
 }

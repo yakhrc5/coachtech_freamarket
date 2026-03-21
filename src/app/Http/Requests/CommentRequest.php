@@ -28,7 +28,7 @@ class CommentRequest extends FormRequest
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'body.required' => 'コメントを入力してください',

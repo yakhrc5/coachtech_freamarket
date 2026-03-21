@@ -6,6 +6,6 @@ class StripeSuccessController extends Controller
 {
     public function success()
     {
-        return redirect('/');
+        return redirect()->route('items.index');
     }
 }

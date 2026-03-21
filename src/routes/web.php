@@ -56,12 +56,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/item/{item_id}/comments', [ItemCommentController::class, 'store'])->name('items.comments.store');
 
     // PG06: 購入
-    Route::get('/purchase/{item}', [PurchaseController::class, 'show'])->name('purchase.show');
-    Route::post('/purchase/{item}', [PurchaseController::class, 'store'])->name('purchase.store');
+    Route::get('/purchase/{item_id}', [PurchaseController::class, 'show'])->name('purchase.show');
+    Route::post('/purchase/{item_id}', [PurchaseController::class, 'store'])->name('purchase.store');
 
     // PG07: 送付先住所変更
-    Route::get('/purchase/address/{item}', [PurchaseAddressController::class, 'edit'])->name('purchase.address.edit');
-    Route::patch('/purchase/address/{item}', [PurchaseAddressController::class, 'update'])->name('purchase.address.update');
+    Route::get('/purchase/address/{item_id}', [PurchaseAddressController::class, 'edit'])->name('purchase.address.edit');
+    Route::patch('/purchase/address/{item_id}', [PurchaseAddressController::class, 'update'])->name('purchase.address.update');
 
     // PG09 / PG11 / PG12: マイページ
     Route::get('/mypage', [MypageController::class, 'show'])->name('mypage.show');

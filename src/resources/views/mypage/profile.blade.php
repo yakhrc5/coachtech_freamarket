@@ -15,7 +15,8 @@
             action="{{ route('profile.update') }}"
             method="POST"
             enctype="multipart/form-data"
-            class="profile-edit__form">
+            class="profile-edit__form"
+            novalidate>
             @csrf
             @method('PATCH')
 

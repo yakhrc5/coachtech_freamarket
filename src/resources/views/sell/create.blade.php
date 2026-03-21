@@ -12,10 +12,6 @@
         {{-- ページタイトル --}}
         <h1 class="exhibit__title">商品の出品</h1>
 
-        @if (session('status'))
-        <p class="exhibit__flash">{{ session('status') }}</p>
-        @endif
-
         @php
         $selectedCategoryIds = array_map('strval', old('category_ids', []));
         @endphp

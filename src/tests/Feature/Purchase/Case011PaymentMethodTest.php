@@ -42,7 +42,7 @@ class Case011PaymentMethodTest extends TestCase
             '_old_input' => [
                 'payment_method_id' => (string) $paymentMethod->id,
             ],
-        ])->get(route('purchase.show', ['item' => $buyItem->id]));
+        ])->get(route('purchase.show', ['item_id' => $buyItem->id]));
 
         // 購入ページが正常に表示されることを確認する
         $response->assertStatus(200);

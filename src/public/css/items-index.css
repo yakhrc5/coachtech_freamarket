@@ -79,11 +79,6 @@
     box-sizing: border-box;
 }
 
-.items-index__empty {
-    font-size: 16px;
-    color: #666;
-}
-
 /* =============================
    商品一覧グリッド
    PCでは 290px × 320px のカードを
@@ -144,16 +139,6 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-/* =============================
-   ページネーション
-============================= */
-
-.items-index__pagination {
-    margin-top: 32px;
-    display: flex;
-    justify-content: center;
 }
 
 /* =============================

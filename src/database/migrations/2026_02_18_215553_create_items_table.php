@@ -20,7 +20,7 @@ class CreateItemsTable extends Migration
             $table->foreignId('condition_id');
 
             $table->string('name');
-            $table->string('brand')->nullable();
+            $table->string('brand', 50)->nullable();
             $table->text('description');
             $table->unsignedInteger('price');
             $table->string('image_path');

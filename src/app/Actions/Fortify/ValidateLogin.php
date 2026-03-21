@@ -8,7 +8,7 @@ class ValidateLogin
 {
     public function __invoke($request)
     {
-        // FormRequest を手動で発火させる
+        // FormRequestのバリデーションを実行
         app(LoginRequest::class)->validateResolved();
     }
 }

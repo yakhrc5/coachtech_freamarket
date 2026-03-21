@@ -33,7 +33,7 @@ class Case012PurchaseAddressTest extends TestCase
         $this->actingAs($buyer);
 
         // 2. 送付先住所変更ページ
-        $editResponse = $this->get(route('purchase.address.edit', ['item' => $buyItem->id]));
+        $editResponse = $this->get(route('purchase.address.edit', ['item_id' => $buyItem->id]));
         $editResponse->assertStatus(200);
 
         // 3. 送付先住所変更画面で住所を更新する
@@ -43,15 +43,15 @@ class Case012PurchaseAddressTest extends TestCase
             'building' => 'テストビル101号',
         ];
         $updateResponse = $this->patch(
-            route('purchase.address.update', ['item' => $buyItem->id]),
+            route('purchase.address.update', ['item_id' => $buyItem->id]),
             $addressData
         );
 
         // 4. 商品購入画面に戻ることを確認
-        $updateResponse->assertRedirect(route('purchase.show', ['item' => $buyItem->id]));
+        $updateResponse->assertRedirect(route('purchase.show', ['item_id' => $buyItem->id]));
 
         // 5. 商品購入画面に反映されていることを確認
-        $purchaseResponse = $this->get(route('purchase.show', ['item' => $buyItem->id]));
+        $purchaseResponse = $this->get(route('purchase.show', ['item_id' => $buyItem->id]));
         $purchaseResponse->assertStatus(200);
 
         $purchaseResponse->assertSeeText('123-4567');
@@ -78,12 +78,12 @@ class Case012PurchaseAddressTest extends TestCase
 
         // 1) 配送先住所変更（セッションに保存される想定）
         $addressUpdateResponse = $this->patch(
-            route('purchase.address.update', ['item' => $buyItem->id]),
+            route('purchase.address.update', ['item_id' => $buyItem->id]),
             $addressData
         );
 
         // 購入画面へ戻る
-        $addressUpdateResponse->assertRedirect(route('purchase.show', ['item' => $buyItem->id]));
+        $addressUpdateResponse->assertRedirect(route('purchase.show', ['item_id' => $buyItem->id]));
 
         // 支払い方法ID（Seeder済みマスタから1件）
         $paymentMethodId = DB::table('payment_methods')->value('id');
@@ -98,7 +98,7 @@ class Case012PurchaseAddressTest extends TestCase
         //    ただし Purchase::create() は Stripe 前なので、DB保存確認が目的ならこの後で assertDatabaseHas を行う
         try {
             $purchaseStoreResponse = $this->post(
-                route('purchase.store', ['item' => $buyItem->id]),
+                route('purchase.store', ['item_id' => $buyItem->id]),
                 [
                     'payment_method_id' => $paymentMethodId,
                 ]

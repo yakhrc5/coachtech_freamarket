@@ -9,6 +9,7 @@
 @section('content')
 <div class="verify">
     <div class="verify__container">
+        <h1 class="visually-hidden">メール認証</h1>
         <p class="verify__message">
             登録していただいたメールアドレスに認証メールを送付しました。<br>
             メール認証を完了してください。

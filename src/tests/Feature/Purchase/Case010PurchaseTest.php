@@ -52,13 +52,13 @@ class Case010PurchaseTest extends TestCase
         $this->assertAuthenticatedAs($buyer);
 
         // 購入ページを開く
-        $response = $this->get(route('purchase.show', ['item' => $buyItem->id]));
+        $response = $this->get(route('purchase.show', ['item_id' => $buyItem->id]));
 
         // 購入ページが正常に表示されることを確認する
         $response->assertStatus(200);
 
         // 「購入する」ボタンを押下して購入処理を実行する
-        $response = $this->post(route('purchase.store', ['item' => $buyItem->id]), [
+        $response = $this->post(route('purchase.store', ['item_id' => $buyItem->id]), [
             'payment_method_id' => $paymentMethod->id,
         ]);
 
@@ -198,7 +198,7 @@ class Case010PurchaseTest extends TestCase
         $this->assertAuthenticatedAs($buyer);
 
         // 購入処理を実行する
-        $response = $this->post(route('purchase.store', ['item' => $buyItem->id]), [
+        $response = $this->post(route('purchase.store', ['item_id' => $buyItem->id]), [
             'payment_method_id' => $paymentMethod->id,
         ]);
 

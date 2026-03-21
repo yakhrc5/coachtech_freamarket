@@ -111,7 +111,7 @@
     padding: 0 35px;
 }
 
-/* h2に変更したためデフォルト余白をリセット */
+/* デフォルト余白をリセット */
 .purchase-section__title {
     margin: 0;
     font-size: 20px;

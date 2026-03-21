@@ -339,10 +339,18 @@ body {
     border-radius: 999px;
     background: #ff5555;
     color: #fff;
-    font-size: 14px;
-    font-weight: 700;
+    font-size: 20px;
+    font-weight: 400;
     line-height: 1;
 }
+
+.product-detail__image-box .badge-sold {
+    top: 18px;
+    left: 18px;
+    padding: 9px 18px;
+    font-size: 30px;
+}
+
 
 /* =============================
    ヘッダー：PC幅微調整
@@ -439,66 +447,4 @@ body {
     .grid {
         grid-template-columns: 1fr;
     }
-}
-
-/* =============================
-   共通ページネーション
-============================= */
-
-.pagination {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-}
-
-.pagination__pages {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.pagination__button,
-.pagination__page,
-.pagination__ellipsis {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 44px;
-    height: 44px;
-    padding: 0 14px;
-    border: 1px solid #d9d9d9;
-    border-radius: 4px;
-    background: #fff;
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 1;
-    color: #5f5f5f;
-    text-decoration: none;
-    box-sizing: border-box;
-}
-
-.pagination__button:hover,
-.pagination__page:hover {
-    border-color: #ff5555;
-    color: #ff5555;
-}
-
-.pagination__page.is-active {
-    border-color: #ff5555;
-    background: #ff5555;
-    color: #fff;
-}
-
-.pagination__button.is-disabled {
-    border-color: #e5e5e5;
-    color: #b3b3b3;
-    cursor: default;
-}
-
-.pagination__ellipsis {
-    min-width: auto;
-    padding: 0 4px;
-    border: none;
-    background: transparent;
 }

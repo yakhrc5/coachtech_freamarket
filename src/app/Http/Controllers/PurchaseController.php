@@ -4,72 +4,72 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PurchaseRequest;
 use App\Models\Item;
-use App\Models\Purchase;
 use App\Models\PaymentMethod;
+use App\Models\Purchase;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 use Stripe\Checkout\Session as CheckoutSession;
 use Stripe\Stripe;
 
-
 class PurchaseController extends Controller
 {
-    public function show(Item $item)
+    public function show($item_id)
     {
-        $user = Auth::user();
+        // ログイン中のユーザーを取得
+        $user = auth()->user();
 
-        // 念のため（通常はauthミドルウェアで守られてる想定）
-        if (!$user) {
-            abort(403);
-        }
+        // 商品を取得（存在しなければ404）
+        $item = Item::findOrFail($item_id);
 
-        // すでに購入済みなら一覧へ（多重購入防止）
+        // すでに購入済みの商品は購入画面に入れない
         if ($this->isPurchased($item)) {
-            return redirect('/');
+            return redirect()->route('items.index');
         }
 
-        // 配送先：セッションに変更住所があればそれを優先、なければプロフィール
+        // 配送先は「住所変更セッション」→「プロフィール住所」の順で採用
         $shipping = $this->resolveShipping($item, $user);
 
+        // 支払い方法一覧を取得
         $paymentMethods = PaymentMethod::orderBy('id')->get();
 
+        // 購入画面を表示
         return view('purchase.show', compact('item', 'shipping', 'paymentMethods'));
     }
 
-    public function store(PurchaseRequest $request, Item $item): RedirectResponse
+    public function store(PurchaseRequest $request, $item_id): RedirectResponse
     {
+        // ログイン中のユーザーを取得
         $user = $request->user();
 
-        // 購入者と出品者のIDチェ//
+        // 購入対象の商品を取得
+        $item = Item::findOrFail($item_id);
+
+        // 自分が出品した商品は購入できない
         if ((int) $item->user_id === (int) $user->id) {
-            return redirect()
-                ->route('purchase.show', $item);
-        }
-        // 売り切れチェック
-        if ($this->isPurchased($item)) {
-            return redirect('/');
+            return redirect()->route('items.index');
         }
 
-        // 支払い方法だけバリデーション
+        // すでに購入済みなら一覧へ戻す
+        if ($this->isPurchased($item)) {
+            return redirect()->route('items.index');
+        }
+
+        // バリデーション済みデータを取得
         $data = $request->validated();
 
-        // 支払い方法マスタをDBから取得（存在しないIDが送られてきた場合は例外で404）
+        // 選択された支払い方法を取得
         $paymentMethod = PaymentMethod::findOrFail($data['payment_method_id']);
 
-        // 配送先：セッション優先 → プロフィール
+        // 配送先は「住所変更セッション」→「プロフィール住所」の順で採用
         $shipping = $this->resolveShipping($item, $user);
 
-        // プロフィール住所が空なら弾く
+        // 配送先の必須情報が空なら購入画面へ戻す
         if (empty($shipping['postal_code']) || empty($shipping['address'])) {
-            return redirect()
-                ->route('purchase.show', $item);
+            return redirect()->route('purchase.show', ['item_id' => $item->id]);
         }
 
-        // 支払い方法取得
-        $paymentMethod = PaymentMethod::findOrFail($data['payment_method_id']);
-
-        // 「購入する」クリック時点で在庫確保（sold扱い）にする
-        if (!Purchase::where('item_id', $item->id)->exists()) {
+        // まだ購入レコードが無い場合のみ作成する
+        // ※ 1商品につき1購入のため、二重登録を防ぐ
+        if (!$this->isPurchased($item)) {
             Purchase::create([
                 'user_id' => $user->id,
                 'item_id' => $item->id,
@@ -79,17 +79,17 @@ class PurchaseController extends Controller
                 'building' => $shipping['building'] ?? null,
             ]);
 
-        // 住所変更セッションを掃除（次回購入時にプロフィール住所を優先させるため）
-        session()->forget("purchase.shipping.item_{$item->id}");
+            // この商品の住所変更セッションを削除
+            session()->forget($this->shippingSessionKey($item->id));
         }
 
-        // Stripeに渡す支払い方法
+        // Stripeに渡す支払い方法コードを配列化
         $paymentMethodTypes = [$paymentMethod->stripe_code];
 
-        // Stripeキーを設定
+        // Stripeのシークレットキーを設定
         Stripe::setApiKey(config('services.stripe.secret'));
 
-        // Stripe決済画面に遷移するためのCheckoutSessionを作成
+        // Stripe Checkout Session を作成
         $session = CheckoutSession::create([
             'mode' => 'payment',
             'payment_method_types' => $paymentMethodTypes,
@@ -104,26 +104,32 @@ class PurchaseController extends Controller
                 ],
                 'quantity' => 1,
             ]],
-            // 購入レコードは store() 時点で作成済み。
-            // Stripe決済画面や成功画面側で参照できるように、購入情報・配送先を metadata に保持
+
+            // 決済結果画面などで参照しやすいように購入情報を保持
             'metadata' => [
                 'user_id' => (string) $user->id,
                 'item_id' => (string) $item->id,
-                'payment_method_id' => $paymentMethod->id,
+                'payment_method_id' => (string) $paymentMethod->id,
                 'payment_method_name' => $paymentMethod->name,
                 'postal_code' => $shipping['postal_code'] ?? '',
                 'address' => $shipping['address'] ?? '',
                 'building' => $shipping['building'] ?? '',
             ],
 
-            // 決済結果の確認・完了表示用の戻り先
+            // 決済成功時の戻り先
             'success_url' => route('stripe.success', ['session_id' => '{CHECKOUT_SESSION_ID}']),
-            'cancel_url' => route('purchase.show', $item),
+
+            // 決済キャンセル時の戻り先
+            'cancel_url' => route('purchase.show', ['item_id' => $item->id]),
         ]);
 
+        // Stripe決済画面へリダイレクト
         return redirect()->away($session->url);
     }
 
+    /**
+     * 商品がすでに購入済みか判定
+     */
     private function isPurchased(Item $item): bool
     {
         return Purchase::query()
@@ -131,11 +137,23 @@ class PurchaseController extends Controller
             ->exists();
     }
 
+    /**
+     * 配送先を決定
+     * 優先順位:
+     * 1. この商品の住所変更セッション
+     * 2. ユーザーのプロフィール住所
+     */
     private function resolveShipping(Item $item, $user): array
     {
+        // セッションに一時保存された配送先を取得
         $sessionShipping = session()->get($this->shippingSessionKey($item->id));
 
-        if (is_array($sessionShipping) && !empty($sessionShipping['postal_code']) && !empty($sessionShipping['address'])) {
+        // セッション側に郵便番号・住所が入っていればそちらを優先
+        if (
+            is_array($sessionShipping) &&
+            !empty($sessionShipping['postal_code']) &&
+            !empty($sessionShipping['address'])
+        ) {
             return [
                 'postal_code' => $sessionShipping['postal_code'],
                 'address' => $sessionShipping['address'],
@@ -143,7 +161,7 @@ class PurchaseController extends Controller
             ];
         }
 
-        // プロフィール
+        // なければプロフィール住所を使う
         return [
             'postal_code' => $user->postal_code ?? '',
             'address' => $user->address ?? '',
@@ -151,6 +169,9 @@ class PurchaseController extends Controller
         ];
     }
 
+    /**
+     * 商品ごとの配送先セッションキーを返す
+     */
     private function shippingSessionKey(int $itemId): string
     {
         return "purchase.shipping.item_{$itemId}";

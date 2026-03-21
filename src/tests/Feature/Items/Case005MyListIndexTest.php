@@ -69,9 +69,9 @@ class Case005MyListIndexTest extends TestCase
         $response->assertDontSeeText('腕時計');
         $response->assertDontSeeText('HDD');
 
-        // items が空ページネーションになっていることも確認
+        // items が空になっていることも確認
         $response->assertViewHas('items', function ($items) {
-            return $items->count() === 0 && $items->total() === 0;
+            return $items->count() === 0;
         });
     }
 
