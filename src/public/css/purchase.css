@@ -1,5 +1,5 @@
 /* =========================================
-   商品購入画面 全体
+商品購入画面 全体
 ========================================= */
 .purchase {
     width: 100%;
@@ -43,7 +43,7 @@
 
 
 /* =========================================
-   商品情報エリア
+商品情報エリア
 ========================================= */
 .purchase-item {
     display: flex;
@@ -104,7 +104,7 @@
 }
 
 /* =========================================
-   セクション共通
+セクション共通
 ========================================= */
 .purchase-section {
     width: 100%;
@@ -135,13 +135,13 @@
 }
 
 /* =========================================
-   支払い方法
+支払い方法
 ========================================= */
 .purchase-payment {
     width: 100%;
     max-width: 326px;
     margin-top: 12px;
-    padding-left: 0px;
+    padding-left: 0;
     box-sizing: border-box;
 }
 
@@ -233,29 +233,29 @@
 /* 選択肢ボタン */
 .payment-select__option {
     display: flex;
-        align-items: center;
-        gap: 10px;
-        width: 100%;
-        padding: 4px 0;
-        border: none;
-        border-radius: 5px;
-        background: transparent;
-        color: #eaeaea;
-        text-align: left;
-        cursor: pointer;
-        font-family: inherit;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 4px 0;
+    border: none;
+    border-radius: 5px;
+    background: transparent;
+    color: #eaeaea;
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
 }
 
 /* チェックマーク表示エリア */
 .payment-select__check {
     display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 15px;
-        opacity: 0;
-        font-size: 18px;
-        font-weight: 700;
-        line-height: 1;
+    align-items: center;
+    justify-content: center;
+    width: 15px;
+    opacity: 0;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
 }
 
 .payment-select__label {
@@ -274,7 +274,7 @@
 }
 
 /* =========================================
-   配送先
+配送先
 ========================================= */
 .purchase-ship {
     width: 100%;
@@ -324,7 +324,7 @@
 }
 
 /* =========================================
-   右側サマリー
+右側サマリー
 ========================================= */
 .purchase-summary {
     width: 100%;
@@ -410,30 +410,8 @@
 }
 
 /* =========================================
-   コンビニ支払い時の注意文
-========================================= */
-.purchase-note {
-    margin-top: 16px;
-    padding: 12px 14px;
-    border: 1px solid #f3c2c2;
-    border-radius: 6px;
-    background: #fff7f7;
-}
-
-.purchase-note__text {
-    margin: 0;
-    font-size: 13px;
-    line-height: 1.6;
-    color: #7a1f1f;
-}
-
-.purchase-note__text+.purchase-note__text {
-    margin-top: 6px;
-}
-
-/* =========================================
-   中間幅調整
-   PCより少し狭い幅で余白と比率を軽く調整
+中間幅調整
+PCより少し狭い幅で余白と比率を軽く調整
 ========================================= */
 @media (max-width: 1200px) {
     .purchase__inner {
@@ -464,9 +442,9 @@
 }
 
 /* =========================================
-   タブレット対応
-   768-850px想定
-   2カラムだと窮屈になるため1カラムに切り替え
+タブレット対応
+768-850px想定
+2カラムだと窮屈になるため1カラムに切り替え
 ========================================= */
 @media (max-width: 850px) {
     .purchase__inner {

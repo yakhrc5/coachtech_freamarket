@@ -17,6 +17,8 @@ use Tests\TestCase;
 
 /**
  * Case013 ユーザー情報取得
+ *
+ * 対応要件:
  * - 必要な情報が取得できる
  *  （プロフィール画像、ユーザー名、出品した商品一覧、購入した商品一覧）
  */
@@ -26,7 +28,7 @@ class Case013MyPageTest extends TestCase
 
     public function test_mypage_shows_profile_image_user_name_and_sell_buy_items(): void
     {
-        $data= $this->prepareMyPageData();
+        $data = $this->prepareMyPageData();
         $user = $data['user'];
         $sellItem = $data['sellItem'];
         $buyItem = $data['buyItem'];
@@ -34,21 +36,21 @@ class Case013MyPageTest extends TestCase
         // ログイン状態にする（verified済みユーザー）
         $this->actingAs($user);
 
-        // 1. プロフィールページ（基本表示）
+        // プロフィールページ（基本表示）
         $profileResponse = $this->get(route('mypage.show'));
-        $profileResponse->assertStatus(200);
+        $profileResponse->assertOk();
         $profileResponse->assertSeeText($user->name);
         $profileResponse->assertSee(Storage::url($user->profile_image_path), false);
 
-        // 2. 出品した商品一覧
+        // 出品した商品一覧
         $sellResponse = $this->get(route('mypage.show', ['page' => 'sell']));
-        $sellResponse->assertStatus(200);
+        $sellResponse->assertOk();
         $sellResponse->assertSeeText($sellItem->name);
         $sellResponse->assertSee(Storage::url($sellItem->image_path), false);
 
-        // 3. 購入した商品一覧
+        // 購入した商品一覧
         $buyResponse = $this->get(route('mypage.show', ['page' => 'buy']));
-        $buyResponse->assertStatus(200);
+        $buyResponse->assertOk();
         $buyResponse->assertSeeText($buyItem->name);
         $buyResponse->assertSee(Storage::url($buyItem->image_path), false);
     }
@@ -63,13 +65,15 @@ class Case013MyPageTest extends TestCase
     private function prepareMyPageData(): array
     {
         // マスタ + 指定10商品を投入
-        $this->seed(UsersSeeder::class);
-        $this->seed(ConditionsSeeder::class);
-        $this->seed(CategoriesSeeder::class);
-        $this->seed(PaymentMethodsSeeder::class);
-        $this->seed(ItemsSeeder::class);
+        $this->seed([
+            UsersSeeder::class,
+            ConditionsSeeder::class,
+            CategoriesSeeder::class,
+            PaymentMethodsSeeder::class,
+            ItemsSeeder::class,
+        ]);
 
-        // プロフィール画像を用意（Storage::url()でアクセスできる場所に）
+        // プロフィール画像を用意する
         Storage::disk('public')->put('profiles/test-user.png', 'dummy');
 
         //ItemsSeederが固定商品を作るので商品名で取得する
@@ -82,14 +86,14 @@ class Case013MyPageTest extends TestCase
         /** @var \App\Models\User $user */
         $user = User::query()->findOrFail($sellItem->user_id);
 
-        // verifiedルートのため email_verified_at を付与
+        // 初期値を設定し、verified状態にする
         $user->forceFill([
             'name' => 'テスト太郎',
             'profile_image_path' => 'profiles/test-user.png',
             'email_verified_at' => now(),
         ])->save();
 
-        // 購入商品を「他人の商品」にしておく（自然な状態）
+        // 購入商品を「他人の商品」にしておく
         /** @var \App\Models\User $otherSeller */
         $otherSeller = User::factory()->create([
             'email_verified_at' => now(),

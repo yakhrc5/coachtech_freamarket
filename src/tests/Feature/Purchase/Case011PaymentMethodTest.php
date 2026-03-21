@@ -45,7 +45,7 @@ class Case011PaymentMethodTest extends TestCase
         ])->get(route('purchase.show', ['item_id' => $buyItem->id]));
 
         // 購入ページが正常に表示されることを確認する
-        $response->assertStatus(200);
+        $response->assertOk();
 
         // hidden input に選択した支払い方法IDが保持されていることを確認する
         $response->assertSee(
@@ -76,11 +76,13 @@ class Case011PaymentMethodTest extends TestCase
     private function preparePaymentMethodData(): array
     {
         // マスタデータと指定商品データを投入する
-        $this->seed(UsersSeeder::class);
-        $this->seed(ConditionsSeeder::class);
-        $this->seed(CategoriesSeeder::class);
-        $this->seed(PaymentMethodsSeeder::class);
-        $this->seed(ItemsSeeder::class);
+        $this->seed([
+            UsersSeeder::class,
+            ConditionsSeeder::class,
+            CategoriesSeeder::class,
+            PaymentMethodsSeeder::class,
+            ItemsSeeder::class,
+        ]);
 
         // 購入対象商品を取得する
         $buyItem = Item::query()->where('name', 'HDD')->firstOrFail();

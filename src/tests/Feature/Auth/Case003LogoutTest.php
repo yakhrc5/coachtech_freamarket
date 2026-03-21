@@ -8,6 +8,8 @@ use Tests\TestCase;
 
 /**
  * Case003 ログアウト機能
+ *
+ * 対応要件:
  * - ログアウトができる
  */
 class Case003LogoutTest extends TestCase
@@ -16,19 +18,19 @@ class Case003LogoutTest extends TestCase
 
     public function test_user_can_logout(): void
     {
-        // 1. ユーザー作成
+        // ユーザー作成
         /** @var \App\Models\User $user */
         $user = User::factory()->create();
 
-        // 2. ログイン状態にする
+        // ログイン状態にする
         $this->actingAs($user);
         $this->assertAuthenticatedAs($user);
 
-        // 3. ログアウト実行（Fortify/標準はPOST /logout）
+        // ログアウト実行（Fortify/標準はPOST /logout）
         $response = $this->post(route('logout'));
 
-        // 4. ログアウトできていることを確認
-        $response->assertStatus(302); // リダイレクトされること
+        // ログアウトできていることを確認
+        $response->assertRedirect(); // リダイレクトされること
         $this->assertGuest();         // 未ログイン状態になっていること
     }
 }

@@ -31,11 +31,11 @@ class Case007ItemShowTest extends TestCase
     {
         $data = $this->prepareItemDetailData();
 
-        // 1. 商品詳細ページを開く
+        // 商品詳細ページを開く
         $response = $this->get(route('items.show', $data['item']->id));
 
-        // 2. すべての情報が商品詳細ページに表示されている（= 取得できている）
-        $response->assertStatus(200);
+        // すべての情報が商品詳細ページに表示されている（= 取得できている）
+        $response->assertOk();
 
         // まずは「コントローラが必要な情報をロードして渡しているか」を担保
         $response->assertViewHas('item', function ($viewItem) use ($data): bool {
@@ -66,23 +66,26 @@ class Case007ItemShowTest extends TestCase
                 && $viewItem->comments->every(fn($comment) => $comment->relationLoaded('user'));
         });
 
-        // 次に「画面上の表示（最低限）」もチェック（文言や装飾に依存しにくいもの中心）
-        $response->assertSee($data['item']->name);
-        $response->assertSee($data['item']->brand);
-        $response->assertSee($data['item']->description);
-
-        // 画像URL（Storage::url() or asset('storage/...') どちらでも /storage/... になる想定）
+        // 次に「画面上の表示（最低限）」もチェック
+        $response->assertSeeText($data['item']->name);
+        $response->assertSeeText($data['item']->brand);
+        $response->assertSeeText($data['item']->description);
         $response->assertSee('/storage/' . $data['item']->image_path);
+
+        $response->assertSeeText(number_format($data['item']->price));
+        $response->assertSeeText($data['condition']->name);
+        $response->assertSeeText((string) $data['likeUsers']->count());
+        $response->assertSeeText((string) $data['comments']->count());
 
         // 複数カテゴリ名が表示されている
         foreach ($data['categories'] as $category) {
-            $response->assertSee($category->name);
+            $response->assertSeeText($category->name);
         }
 
         // コメントしたユーザー情報 + コメント内容が表示されている
         foreach ($data['comments'] as $comment) {
-            $response->assertSee($comment->user->name);
-            $response->assertSee($comment->body);
+            $response->assertSeeText($comment->user->name);
+            $response->assertSeeText($comment->body);
         }
     }
 
@@ -90,11 +93,11 @@ class Case007ItemShowTest extends TestCase
     {
         $data = $this->prepareItemDetailData();
 
-        // 1. 商品詳細ページを開く
+        // 商品詳細ページを開く
         $response = $this->get(route('items.show', $data['item']->id));
 
-        // 2. 複数選択されたカテゴリが商品詳細ページに表示されている
-        $response->assertStatus(200);
+        // 複数選択されたカテゴリが商品詳細ページに表示されている
+        $response->assertOk();
 
         // 表示（HTML）としてカテゴリ名が全部見えること
         foreach ($data['categories'] as $category) {

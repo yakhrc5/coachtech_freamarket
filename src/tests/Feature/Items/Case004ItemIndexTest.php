@@ -39,7 +39,7 @@ class Case004ItemIndexTest extends TestCase
         $indexResponse = $this->get(route('items.index'));
 
         // 正常に表示されることを確認
-        $indexResponse->assertStatus(200);
+        $indexResponse->assertOk();
 
         // トップページに表示する商品一覧の件数が、itemテーブル全件数と一致することを確認
         $this->assertIndexItemsCount($indexResponse, $allItemCount);
@@ -59,7 +59,7 @@ class Case004ItemIndexTest extends TestCase
         $indexResponse = $this->get(route('items.index'));
 
         // 正常に表示されることを確認
-        $indexResponse->assertStatus(200);
+        $indexResponse->assertOk();
 
         // 購入済み商品の商品名が表示されることを確認
         $indexResponse->assertSeeText($data['buyItem']->name);
@@ -82,7 +82,7 @@ class Case004ItemIndexTest extends TestCase
         $indexResponse = $this->actingAs($data['user'])->get(route('items.index'));
 
         // 正常に表示されることを確認
-        $indexResponse->assertStatus(200);
+        $indexResponse->assertOk();
 
         // トップページに表示する商品一覧の件数が、ログインユーザー以外の商品件数と一致することを確認
         $this->assertIndexItemsCount($indexResponse, $visibleItemCount);
@@ -99,7 +99,6 @@ class Case004ItemIndexTest extends TestCase
     /**
  * @return array{
  *   user:\App\Models\User,
- *   sellItem:\App\Models\Item,
  *   buyItem:\App\Models\Item,
  *   allItems:\Illuminate\Support\Collection<int,\App\Models\Item>,
  *   myItems:\Illuminate\Support\Collection<int,\App\Models\Item>
@@ -162,7 +161,6 @@ class Case004ItemIndexTest extends TestCase
 
         return [
             'user' => $user,
-            'sellItem' => $sellItem,
             'buyItem' => $buyItem,
             'allItems' => $allItems,
             'myItems' => $myItems,

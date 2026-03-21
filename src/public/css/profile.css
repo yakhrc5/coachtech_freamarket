@@ -1,10 +1,10 @@
 /* =============================
-   プロフィール設定画面
+プロフィール設定画面
 ============================= */
 
 .profile-edit {
     width: 100%;
-    background: #fff;
+    background: #ffffff;
     margin-top: 19px;
 }
 
@@ -132,7 +132,7 @@
     border: none;
     border-radius: 6px;
     background: #ff5555;
-    color: #fff;
+    color: #ffffff;
     font-size: 26px;
     font-weight: 700;
     font-family: inherit;
@@ -142,8 +142,8 @@
 }
 
 /* =============================
-   タブレット対応
-   768px〜850px
+タブレット対応
+768px〜850px
 ============================= */
 
 @media screen and (min-width: 768px) and (max-width: 850px) {

@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Items;
 
-use App\Models\Item;
-use App\Models\Condition;
 use App\Models\Category;
+use App\Models\Condition;
+use App\Models\Item;
 use App\Models\User;
 use Database\Seeders\CategoriesSeeder;
 use Database\Seeders\ConditionsSeeder;
@@ -26,7 +26,7 @@ class Case009ItemCommentTest extends TestCase
 
     public function test_logged_in_user_can_post_comment(): void
     {
-        // テスト用データを準備する
+        // コメント機能テスト用データを準備する
         $data = $this->prepareCommentData();
 
         // コメントするユーザーでログインする
@@ -39,43 +39,50 @@ class Case009ItemCommentTest extends TestCase
         );
 
         // 商品詳細画面が正常に表示されることを確認する
-        $response->assertStatus(200);
+        $response->assertOk();
 
         // コメント前はコメント数が0件で表示されることを確認する
-        $response->assertSee('コメント(0)');
+        $response->assertSeeText('コメント(0)');
 
-        // コメント送信する
+        // コメントを送信する
         $response = $this->post(
             route('items.comments.store', ['item_id' => $data['item']->id]),
             [
                 'body' => 'テストコメント',
             ]
         );
+
         // コメント送信後にリダイレクトされることを確認する
         $response->assertRedirect();
+
         // commentsテーブルにコメントが登録されていることを確認する
         $this->assertDatabaseHas('comments', [
             'user_id' => $data['loginUser']->id,
             'item_id' => $data['item']->id,
             'body' => 'テストコメント',
         ]);
+
         // コメント後の商品詳細画面を再度開く
         $response = $this->get(
             route('items.show', ['item_id' => $data['item']->id])
         );
-        // コメント後の商品詳細画面が正常に表示されることを確認する
-        $response->assertStatus(200);
+
+        // 商品詳細画面が正常に表示されることを確認する
+        $response->assertOk();
+
         // コメント数が1件で表示されることを確認する
-        $response->assertSee('コメント(1)');
+        $response->assertSeeText('コメント(1)');
+
         // コメント内容が表示されることを確認する
-        $response->assertSee('テストコメント');
+        $response->assertSeeText('テストコメント');
+
         // コメントしたユーザー名が表示されることを確認する
-        $response->assertSee($data['loginUser']->name);
+        $response->assertSeeText($data['loginUser']->name);
     }
 
     public function test_guest_user_cannot_post_comment(): void
     {
-        // テスト用データを準備する
+        // コメント機能テスト用データを準備する
         $data = $this->prepareCommentData();
 
         // ゲスト状態で商品詳細画面を開く
@@ -84,12 +91,12 @@ class Case009ItemCommentTest extends TestCase
         );
 
         // 商品詳細画面が正常に表示されることを確認する
-        $response->assertStatus(200);
+        $response->assertOk();
 
         // コメント前はコメント数が0件で表示されることを確認する
-        $response->assertSee('コメント(0)');
+        $response->assertSeeText('コメント(0)');
 
-        // コメント送信を試みる（ゲストはコメントできない想定）
+        // ゲスト状態でコメント送信を試みる
         $response = $this->post(
             route('items.comments.store', ['item_id' => $data['item']->id]),
             [
@@ -107,38 +114,27 @@ class Case009ItemCommentTest extends TestCase
         ]);
     }
 
-    public function test_comment_validation(): void
+    public function test_comment_validation_required(): void
     {
-        // テスト用データを準備する
+        // コメント機能テスト用データを準備する
         $data = $this->prepareCommentData();
 
         // コメントするユーザーでログインする
         $this->actingAs($data['loginUser']);
         $this->assertAuthenticatedAs($data['loginUser']);
 
-        // 商品詳細画面からコメント送信した想定でPOSTする
+        // 商品詳細画面からコメント送信した想定で、未入力のまま送信する
         $response = $this->from(
             route('items.show', ['item_id' => $data['item']->id])
-        )->post(
+        )->followingRedirects()->post(
             route('items.comments.store', ['item_id' => $data['item']->id]),
             [
                 'body' => '',
             ]
         );
 
-        // バリデーションエラーになり、元の画面へ戻ることを確認する
-        $response->assertRedirect(route('items.show', ['item_id' => $data['item']->id]));
-        $response->assertSessionHasErrors([
-            'body' => 'コメントを入力してください',
-        ]);
-
-        // 次のリクエストでエラーメッセージが画面に表示されることを確認する
-        $response = $this->get(
-            route('items.show', ['item_id' => $data['item']->id])
-        );
-        // 画面にバリデーションメッセージが表示されることを確認する
-        $response->assertStatus(200);
-        $response->assertSee('コメントを入力してください');
+        // 元の画面に戻り、バリデーションメッセージが表示されることを確認する
+        $response->assertSeeText('コメントを入力してください');
 
         // commentsテーブルに1件も登録されていないことを確認する
         $this->assertDatabaseCount('comments', 0);
@@ -146,7 +142,7 @@ class Case009ItemCommentTest extends TestCase
 
     public function test_comment_validation_max_length(): void
     {
-        // テスト用データを準備する
+        // コメント機能テスト用データを準備する
         $data = $this->prepareCommentData();
 
         // コメントするユーザーでログインする
@@ -154,64 +150,60 @@ class Case009ItemCommentTest extends TestCase
         $this->assertAuthenticatedAs($data['loginUser']);
 
         // 256文字のコメントを作成する
-        $longComment = str_repeat('あ', 256); // 256文字のコメント
+        $longComment = str_repeat('あ', 256);
 
-        // 商品詳細画面からコメント送信した想定でPOSTする
+        // 商品詳細画面からコメント送信した想定で、256文字のコメントを送信する
         $response = $this->from(
             route('items.show', ['item_id' => $data['item']->id])
-        )->post(
+        )->followingRedirects()->post(
             route('items.comments.store', ['item_id' => $data['item']->id]),
             [
                 'body' => $longComment,
             ]
         );
 
-        // バリデーションエラーになり、元の画面へ戻ることを確認する
-        $response->assertRedirect(route('items.show', ['item_id' => $data['item']->id]));
-        $response->assertSessionHasErrors([
-            'body' => 'コメントは255文字以内で入力してください',
-        ]);
-
-        // 次のリクエストでエラーメッセージが画面に表示されることを確認する
-        $response = $this->get(
-            route('items.show', ['item_id' => $data['item']->id])
-        );
-
-        $response->assertStatus(200);
-        $response->assertSee('コメントは255文字以内で入力してください');
+        // 元の画面に戻り、バリデーションメッセージが表示されることを確認する
+        $response->assertSeeText('コメントは255文字以内で入力してください');
 
         // commentsテーブルに1件も登録されていないことを確認する
         $this->assertDatabaseCount('comments', 0);
     }
 
     /**
-     * 商品詳細テスト用データを準備する
+     * コメント機能テスト用データを準備する
      *
      * @return array{
-     *  loginUser: \App\Models\User,
-     *  seller: \App\Models\User,
-     *  item: \App\Models\Item
+     *   loginUser: \App\Models\User,
+     *   item: \App\Models\Item
      * }
      */
     private function prepareCommentData(): array
     {
-
         // マスタをseedしてから、商品を作成して必要な情報を紐付ける
         $this->seed([
             ConditionsSeeder::class,
             CategoriesSeeder::class,
         ]);
-        // loginUserを作成
+
+        // コメントするログインユーザーを作成する
+        /** @var \App\Models\User $loginUser */
         $loginUser = User::factory()->create([
             'email_verified_at' => now(),
         ]);
-        // 出品者を作成
+
+        // 出品者ユーザーを作成する
+        /** @var \App\Models\User $seller */
         $seller = User::factory()->create();
 
-        // 状態、カテゴリは最初の1件を取得
+        // 状態とカテゴリは最初の1件を取得する
+        /** @var \App\Models\Condition $condition */
         $condition = Condition::query()->firstOrFail();
+
+        /** @var \App\Models\Category $category */
         $category = Category::query()->firstOrFail();
 
+        // コメント対象の商品を作成する
+        /** @var \App\Models\Item $item */
         $item = Item::query()->create([
             'user_id' => $seller->id,
             'condition_id' => $condition->id,
@@ -222,14 +214,12 @@ class Case009ItemCommentTest extends TestCase
             'image_path' => 'items/test-item.jpg',
         ]);
 
-        // カテゴリを紐付け
+        // カテゴリを紐付ける
         $item->categories()->attach($category->id);
 
         return [
             'item' => $item,
-            'seller' => $seller,
             'loginUser' => $loginUser,
         ];
     }
-
 }

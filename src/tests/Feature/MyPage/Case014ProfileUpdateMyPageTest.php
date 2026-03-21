@@ -9,6 +9,8 @@ use Tests\TestCase;
 
 /**
  * Case014 ユーザー情報更新
+ *
+ * 対応要件:
  * - 変更項目が初期値として過去設定されていること
  *  （プロフィール画像、ユーザー名、郵便番号、住所）
  */
@@ -23,14 +25,20 @@ class Case014ProfileUpdateMyPageTest extends TestCase
         // ログイン状態にする（verified済みユーザー）
         $this->actingAs($user);
 
-        // プロフィール編集ページ
+        // プロフィール編集ページを開く
+        $response = $this->get(route('profile.edit'));
+
+        // ページが正常に表示されることを確認する
+        $response->assertOk();
+
+        // 初期値として各情報が表示されていることを確認する
         $profileResponse = $this->get(route('profile.edit'));
-        $profileResponse->assertStatus(200);
-        $profileResponse->assertSee($user->name);
+        $profileResponse->assertOk();
         $profileResponse->assertSee(Storage::url($user->profile_image_path), false);
-        $profileResponse->assertSee($user->postal_code);
-        $profileResponse->assertSee($user->address);
-        $profileResponse->assertSee($user->building);
+        $profileResponse->assertSee('value="' . $user->name . '"', false);
+        $profileResponse->assertSee('value="' . $user->postal_code . '"', false);
+        $profileResponse->assertSee('value="' . $user->address . '"', false);
+        $profileResponse->assertSee('value="' . $user->building . '"', false);
     }
 
     private function prepareMyPageData(): User

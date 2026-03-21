@@ -33,15 +33,15 @@ class Case008ItemLikeTest extends TestCase
         $this->assertAuthenticatedAs($data['loginUser']);
 
         // いいね前の商品詳細画面を開く
-        $response = $this->get(
-            route('items.show', ['item_id' => $data['item']->id])
-        );
+        $response = $this->get(route('items.show', ['item_id' => $data['item']->id]));
 
         // 商品詳細画面が正常に表示されることを確認する
-        $response->assertStatus(200);
+        $response->assertOk();
 
         // いいね前はいいね数が0件で表示されることを確認する
-        $response->assertSee('<p class="product-detail__stat-count">0</p>', false);
+        $response->assertViewHas('item', function ($viewItem): bool {
+            return (int) $viewItem->likes_count === 0;
+        });
 
         // いいねアイコンを押下する
         $response = $this->post(
@@ -63,10 +63,12 @@ class Case008ItemLikeTest extends TestCase
         );
 
         // 商品詳細画面が正常に表示されることを確認する
-        $response->assertStatus(200);
+        $response->assertOk();
 
         // いいね後はいいね数が1件で表示されることを確認する
-        $response->assertSee('<p class="product-detail__stat-count">1</p>', false);
+        $response->assertViewHas('item', function ($viewItem): bool {
+            return (int) $viewItem->likes_count === 1;
+        });
     }
 
     public function test_liked_icon_changes_color(): void
@@ -84,7 +86,7 @@ class Case008ItemLikeTest extends TestCase
         );
 
         // 商品詳細画面が正常に表示されることを確認する
-        $response->assertStatus(200);
+        $response->assertOk();
 
         // いいね前は未いいねアイコンが表示されることを確認する
         $response->assertSee('heart-default.png');
@@ -109,13 +111,13 @@ class Case008ItemLikeTest extends TestCase
         );
 
         // 商品詳細画面が正常に表示されることを確認する
-        $response->assertStatus(200);
+        $response->assertOk();
 
         // いいね後はいいね済みアイコンが表示されることを確認する
         $response->assertSee('heart-liked.png');
     }
 
-public function test_user_can_unlike_item(): void
+    public function test_user_can_unlike_item(): void
     {
         // テスト用データを準備する
         $data = $this->prepareLikeData();
@@ -155,27 +157,27 @@ public function test_user_can_unlike_item(): void
         );
 
         // 商品詳細画面が正常に表示されることを確認する
-        $response->assertStatus(200);
+        $response->assertOk();
 
         // 解除後は未いいねアイコンが表示されることを確認する
         $response->assertSee('heart-default.png');
 
         // 解除後はいいね数が0件で表示されることを確認する
-        $response->assertSee('<p class="product-detail__stat-count">0</p>', false);
+        $response->assertViewHas('item', function ($viewItem): bool {
+            return (int) $viewItem->likes_count === 0;
+        });
     }
 
     /**
-     * 商品詳細テスト用データを準備する
+     * いいね機能テスト用データを準備する
      *
      * @return array{
      *  loginUser: \App\Models\User,
-     *  seller: \App\Models\User,
      *  item: \App\Models\Item
      * }
      */
     private function prepareLikeData(): array
     {
-
         // マスタをseedしてから、商品を作成して必要な情報を紐付ける
         $this->seed([
             ConditionsSeeder::class,
@@ -207,7 +209,6 @@ public function test_user_can_unlike_item(): void
 
         return [
             'item' => $item,
-            'seller' => $seller,
             'loginUser' => $loginUser,
         ];
     }

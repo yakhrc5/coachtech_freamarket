@@ -63,10 +63,10 @@ class Case016EmailVerificationTest extends TestCase
         $response = $this->get(route('verification.notice'));
 
         // メール認証誘導画面が正常に表示されることを確認する
-        $response->assertStatus(200);
+        $response->assertOk();
 
         // 「認証はこちらから」リンクが表示されていることを確認する
-        $response->assertSee('認証はこちらから');
+        $response->assertSeeText('認証はこちらから');
 
         // Mailhog のURLがリンク先として設定されていることを確認する
         $response->assertSee('href="http://localhost:8025"', false);
@@ -85,7 +85,7 @@ class Case016EmailVerificationTest extends TestCase
         $response = $this->get(route('verification.notice'));
 
         // メール認証誘導画面が正常に表示されることを確認する
-        $response->assertStatus(200);
+        $response->assertOk();
 
         // 認証用の署名付きURLを生成する
         $verificationUrl = URL::temporarySignedRoute(

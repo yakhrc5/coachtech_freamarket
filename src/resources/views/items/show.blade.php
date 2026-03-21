@@ -23,7 +23,7 @@
                                 alt="{{ $item->name }}">
 
                             @if($item->purchase)
-                            <span class="badge-sold">Sold</span>
+                            <span class="badge-sold badge-sold--detail">Sold</span>
                             @endif
 
                             @else

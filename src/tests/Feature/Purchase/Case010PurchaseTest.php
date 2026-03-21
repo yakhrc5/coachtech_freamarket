@@ -28,37 +28,36 @@ class Case010PurchaseTest extends TestCase
 
     public function test_user_can_purchase_item(): void
     {
-        // テスト用データを準備する
+        // 購入機能テスト用データを準備する
         $data = $this->preparePurchaseData();
 
+        /** @var \App\Models\User $buyer */
         $buyer = $data['buyer'];
-        $buyItem = $data['buyItem'];
 
-        // 支払い方法を1件取得する
+        /** @var \App\Models\Item $item */
+        $item = $data['item'];
+
+        // Stripeで使用する支払い方法を1件取得する
+        /** @var \App\Models\PaymentMethod $paymentMethod */
         $paymentMethod = PaymentMethod::query()
             ->whereNotNull('stripe_code')
             ->firstOrFail();
 
         // Stripeの外部通信をモックする
-        Mockery::mock('alias:Stripe\Checkout\Session')
-            ->shouldReceive('create')
-            ->once()
-            ->andReturn((object) [
-                'url' => 'https://checkout.stripe.test/session',
-            ]);
+        $this->mockStripeCheckoutSession();
 
         // 購入者でログインする
         $this->actingAs($buyer);
         $this->assertAuthenticatedAs($buyer);
 
-        // 購入ページを開く
-        $response = $this->get(route('purchase.show', ['item_id' => $buyItem->id]));
+        // 購入画面を開く
+        $response = $this->get(route('purchase.show', ['item_id' => $item->id]));
 
-        // 購入ページが正常に表示されることを確認する
-        $response->assertStatus(200);
+        // 購入画面が正常に表示されることを確認する
+        $response->assertOk();
 
         // 「購入する」ボタンを押下して購入処理を実行する
-        $response = $this->post(route('purchase.store', ['item_id' => $buyItem->id]), [
+        $response = $this->post(route('purchase.store', ['item_id' => $item->id]), [
             'payment_method_id' => $paymentMethod->id,
         ]);
 
@@ -68,7 +67,7 @@ class Case010PurchaseTest extends TestCase
         // purchasesテーブルに購入情報が登録されていることを確認する
         $this->assertDatabaseHas('purchases', [
             'user_id' => $buyer->id,
-            'item_id' => $buyItem->id,
+            'item_id' => $item->id,
             'payment_method_id' => $paymentMethod->id,
             'postal_code' => '111-1111',
             'address' => '東京都港区初期町1-1',
@@ -78,38 +77,44 @@ class Case010PurchaseTest extends TestCase
 
     public function test_purchased_item_is_displayed_as_sold_on_item_index(): void
     {
-        // テスト用データを準備する
+        // 購入機能テスト用データを準備する
         $data = $this->preparePurchaseData();
 
+        /** @var \App\Models\User $buyer */
         $buyer = $data['buyer'];
-        $buyItem = $data['buyItem'];
+
+        /** @var \App\Models\Item $item */
+        $item = $data['item'];
 
         // 購入処理を実行する
-        $this->purchaseItem($buyer, $buyItem);
+        $this->purchaseItem($buyer, $item);
 
         // 商品一覧画面を開く
         $response = $this->get(route('items.index'));
 
         // 商品一覧画面が正常に表示されることを確認する
-        $response->assertStatus(200);
+        $response->assertOk();
 
         // 購入した商品名が表示されていることを確認する
-        $response->assertSee($buyItem->name);
+        $response->assertSeeText($item->name);
 
         // 購入した商品にSoldが表示されることを確認する
-        $response->assertSee('Sold');
+        $response->assertSeeText('Sold');
     }
 
     public function test_purchased_item_is_displayed_on_my_page_buy_list(): void
     {
-        // テスト用データを準備する
+        // 購入機能テスト用データを準備する
         $data = $this->preparePurchaseData();
 
+        /** @var \App\Models\User $buyer */
         $buyer = $data['buyer'];
-        $buyItem = $data['buyItem'];
+
+        /** @var \App\Models\Item $item */
+        $item = $data['item'];
 
         // 購入処理を実行する
-        $this->purchaseItem($buyer, $buyItem);
+        $this->purchaseItem($buyer, $item);
 
         // 購入者でログインする
         $this->actingAs($buyer);
@@ -119,10 +124,10 @@ class Case010PurchaseTest extends TestCase
         $response = $this->get(route('mypage.show', ['page' => 'buy']));
 
         // 購入一覧画面が正常に表示されることを確認する
-        $response->assertStatus(200);
+        $response->assertOk();
 
         // 購入した商品が購入一覧に表示されることを確認する
-        $response->assertSee($buyItem->name);
+        $response->assertSeeText($item->name);
     }
 
     /**
@@ -130,22 +135,26 @@ class Case010PurchaseTest extends TestCase
      *
      * @return array{
      *   buyer: \App\Models\User,
-     *   buyItem: \App\Models\Item
+     *   item: \App\Models\Item
      * }
      */
     private function preparePurchaseData(): array
     {
         // マスタデータと指定商品データを投入する
-        $this->seed(UsersSeeder::class);
-        $this->seed(ConditionsSeeder::class);
-        $this->seed(CategoriesSeeder::class);
-        $this->seed(PaymentMethodsSeeder::class);
-        $this->seed(ItemsSeeder::class);
+        $this->seed([
+            UsersSeeder::class,
+            ConditionsSeeder::class,
+            CategoriesSeeder::class,
+            PaymentMethodsSeeder::class,
+            ItemsSeeder::class,
+        ]);
 
         // 購入対象商品を取得する
-        $buyItem = Item::query()->where('name', 'HDD')->firstOrFail();
+        /** @var \App\Models\Item $item */
+        $item = Item::query()->where('name', 'HDD')->firstOrFail();
 
         // 購入者ユーザーを作成する
+        /** @var \App\Models\User $buyer */
         $buyer = User::factory()->create([
             'email_verified_at' => now(),
         ]);
@@ -158,47 +167,43 @@ class Case010PurchaseTest extends TestCase
         ])->save();
 
         // 購入対象商品が自分の商品にならないよう調整する
-        if ((int) $buyItem->user_id === (int) $buyer->id) {
+        if ((int) $item->user_id === (int) $buyer->id) {
+            /** @var \App\Models\User $otherSeller */
             $otherSeller = User::factory()->create([
                 'email_verified_at' => now(),
             ]);
 
-            $buyItem->update([
+            $item->update([
                 'user_id' => $otherSeller->id,
             ]);
         }
 
-        // テストで使用するデータを返す
         return [
             'buyer' => $buyer,
-            'buyItem' => $buyItem,
+            'item' => $item,
         ];
     }
 
     /**
      * 商品購入処理を共通化する
      */
-    private function purchaseItem(User $buyer, Item $buyItem): void
+    private function purchaseItem(User $buyer, Item $item): void
     {
         // Stripeで使用する支払い方法を1件取得する
+        /** @var \App\Models\PaymentMethod $paymentMethod */
         $paymentMethod = PaymentMethod::query()
             ->whereNotNull('stripe_code')
             ->firstOrFail();
 
         // Stripeの外部通信をモックする
-        Mockery::mock('alias:Stripe\Checkout\Session')
-            ->shouldReceive('create')
-            ->once()
-            ->andReturn((object) [
-                'url' => 'https://checkout.stripe.test/session',
-            ]);
+        $this->mockStripeCheckoutSession();
 
         // 購入者でログインする
         $this->actingAs($buyer);
         $this->assertAuthenticatedAs($buyer);
 
         // 購入処理を実行する
-        $response = $this->post(route('purchase.store', ['item_id' => $buyItem->id]), [
+        $response = $this->post(route('purchase.store', ['item_id' => $item->id]), [
             'payment_method_id' => $paymentMethod->id,
         ]);
 
@@ -208,8 +213,21 @@ class Case010PurchaseTest extends TestCase
         // purchasesテーブルに購入情報が登録されていることを確認する
         $this->assertDatabaseHas('purchases', [
             'user_id' => $buyer->id,
-            'item_id' => $buyItem->id,
+            'item_id' => $item->id,
             'payment_method_id' => $paymentMethod->id,
         ]);
+    }
+
+    /**
+     * Stripe Checkout Session の作成処理をモックする
+     */
+    private function mockStripeCheckoutSession(): void
+    {
+        Mockery::mock('alias:Stripe\Checkout\Session')
+            ->shouldReceive('create')
+            ->once()
+            ->andReturn((object) [
+                'url' => 'https://checkout.stripe.test/session',
+            ]);
     }
 }

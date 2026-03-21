@@ -17,13 +17,13 @@
 
 <body>
     @php
-    // 認証系画面では「ロゴのみヘッダー」を表示する
-    $isAuthHeader = request()->routeIs(
-    'register',
-    'login',
-    'verification.notice',
-    'verification.verify'
-    );
+        // 認証系画面では「ロゴのみヘッダー」を表示する
+        $isAuthHeader = request()->routeIs(
+            'register',
+            'login',
+            'verification.notice',
+            'verification.verify'
+        );
     @endphp
 
     {{-- ヘッダー --}}
@@ -70,7 +70,7 @@
     </header>
 
     {{-- メインコンテンツ --}}
-    <main class="layout_main">
+    <main class="layout__main">
         @yield('content')
     </main>
 

@@ -26,7 +26,7 @@ class Case002LoginTest extends TestCase
         $response = $this->get(route('login'));
 
         // ログインページが正常に表示されることを確認する
-        $response->assertStatus(200);
+        $response->assertOk();
 
         // メールアドレスを空にしてログインを実行する
         $response = $this->from(route('login'))
@@ -37,7 +37,7 @@ class Case002LoginTest extends TestCase
             ]);
 
         // バリデーションメッセージが画面に表示されることを確認する
-        $response->assertSee('メールアドレスを入力してください');
+        $response->assertSeeText('メールアドレスを入力してください');
 
         // ログインしていないことを確認する
         $this->assertGuest();
@@ -49,7 +49,7 @@ class Case002LoginTest extends TestCase
         $response = $this->get(route('login'));
 
         // ログインページが正常に表示されることを確認する
-        $response->assertStatus(200);
+        $response->assertOk();
 
         // パスワードを空にしてログインを実行する
         $response = $this->from(route('login'))
@@ -60,7 +60,7 @@ class Case002LoginTest extends TestCase
             ]);
 
         // バリデーションメッセージが画面に表示されることを確認する
-        $response->assertSee('パスワードを入力してください');
+        $response->assertSeeText('パスワードを入力してください');
 
         // ログインしていないことを確認する
         $this->assertGuest();
@@ -75,7 +75,7 @@ class Case002LoginTest extends TestCase
         $response = $this->get(route('login'));
 
         // ログインページが正常に表示されることを確認する
-        $response->assertStatus(200);
+        $response->assertOk();
 
         // 登録されていないログイン情報でログインを実行する
         $response = $this->from(route('login'))
@@ -86,7 +86,7 @@ class Case002LoginTest extends TestCase
             ]);
 
         // 認証失敗メッセージが画面に表示されることを確認する
-        $response->assertSee('ログイン情報が登録されていません');
+        $response->assertSeeText('ログイン情報が登録されていません');
 
         // ログインしていないことを確認する
         $this->assertGuest();
@@ -101,7 +101,7 @@ class Case002LoginTest extends TestCase
         $response = $this->get(route('login'));
 
         // ログインページが正常に表示されることを確認する
-        $response->assertStatus(200);
+        $response->assertOk();
 
         // 正しいログイン情報でログインを実行する
         $response = $this->post(route('login'), [

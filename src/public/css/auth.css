@@ -1,11 +1,11 @@
 /* =============================
-   認証画面
-   ログイン画面 / 会員登録画面で共通利用
+認証画面
+ログイン画面 / 会員登録画面で共通利用
 ============================= */
 
 /* 認証画面全体
-   common.css の .layout_main に余白があるため、
-   ここではフォーム周辺の調整のみ行う */
+common.css の .layout__main に余白があるため、
+ここではフォーム周辺の調整のみ行う */
 .auth {
     width: 100%;
     padding: 78px 20px 0;
@@ -60,7 +60,7 @@
     padding: 0 12px;
     border: 1px solid #5F5F5F;
     border-radius: 4px;
-    background: #fff;
+    background: #ffffff;
     font-size: 20px;
     outline: none;
     box-sizing: border-box;
@@ -137,7 +137,7 @@
 }
 
 /* =============================
-   タブレット対応   768px〜850px
+タブレット対応   768px〜850px
 ============================= */
 
 @media screen and (min-width: 768px) and (max-width: 850px) {
@@ -155,7 +155,7 @@
     }
 
     .auth__label {
-    font-size: 20px;
+        font-size: 20px;
     }
 
     .auth__input {
@@ -185,8 +185,7 @@
 }
 
 /* =============================
-   参考対応
-   768px未満でも崩れにくくする
+768px未満でも崩れにくくする
 ============================= */
 
 @media screen and (max-width: 767px) {

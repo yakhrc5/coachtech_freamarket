@@ -84,7 +84,7 @@
                     {{-- 購入した商品一覧 --}}
                     @foreach ($buyPurchases as $purchase)
                         @php
-                        $purchasedItem = $purchase->item;
+                            $purchasedItem = $purchase->item;
                         @endphp
 
                         @if ($purchasedItem)

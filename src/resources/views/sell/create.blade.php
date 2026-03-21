@@ -13,7 +13,7 @@
         <h1 class="exhibit__title">商品の出品</h1>
 
         @php
-        $selectedCategoryIds = array_map('strval', old('category_ids', []));
+            $selectedCategoryIds = array_map('strval', old('category_ids', []));
         @endphp
 
         {{-- 出品フォーム --}}
@@ -61,7 +61,7 @@
                         <div class="exhibit__chips">
                             @foreach ($categories as $category)
                             @php
-                            $checked = in_array((string) $category->id, $selectedCategoryIds, true);
+                                $checked = in_array((string) $category->id, $selectedCategoryIds, true);
                             @endphp
 
                             <label class="exhibit-chip">

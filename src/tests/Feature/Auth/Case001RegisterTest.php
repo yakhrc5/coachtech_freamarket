@@ -26,7 +26,7 @@ class Case001RegisterTest extends TestCase
         $response = $this->get(route('register'));
 
         // 会員登録ページが正常に表示されることを確認する
-        $response->assertStatus(200);
+        $response->assertOk();
 
         // 名前を空にして会員登録を実行する
         $response = $this->from(route('register'))
@@ -39,7 +39,7 @@ class Case001RegisterTest extends TestCase
             ]);
 
         // バリデーションメッセージが画面に表示されることを確認する
-        $response->assertSee('お名前を入力してください');
+        $response->assertSeeText('お名前を入力してください');
 
         // usersテーブルに会員情報が登録されていないことを確認する
         $this->assertDatabaseCount('users', 0);
@@ -51,7 +51,7 @@ class Case001RegisterTest extends TestCase
         $response = $this->get(route('register'));
 
         // 会員登録ページが正常に表示されることを確認する
-        $response->assertStatus(200);
+        $response->assertOk();
 
         // メールアドレスを空にして会員登録を実行する
         $response = $this->from(route('register'))
@@ -64,7 +64,7 @@ class Case001RegisterTest extends TestCase
             ]);
 
         // バリデーションメッセージが画面に表示されることを確認する
-        $response->assertSee('メールアドレスを入力してください');
+        $response->assertSeeText('メールアドレスを入力してください');
 
         // usersテーブルに会員情報が登録されていないことを確認する
         $this->assertDatabaseCount('users', 0);
@@ -76,7 +76,7 @@ class Case001RegisterTest extends TestCase
         $response = $this->get(route('register'));
 
         // 会員登録ページが正常に表示されることを確認する
-        $response->assertStatus(200);
+        $response->assertOk();
 
         // パスワードを空にして会員登録を実行する
         $response = $this->from(route('register'))
@@ -89,7 +89,7 @@ class Case001RegisterTest extends TestCase
             ]);
 
         // バリデーションメッセージが画面に表示されることを確認する
-        $response->assertSee('パスワードを入力してください');
+        $response->assertSeeText('パスワードを入力してください');
 
         // usersテーブルに会員情報が登録されていないことを確認する
         $this->assertDatabaseCount('users', 0);
@@ -101,7 +101,7 @@ class Case001RegisterTest extends TestCase
         $response = $this->get(route('register'));
 
         // 会員登録ページが正常に表示されることを確認する
-        $response->assertStatus(200);
+        $response->assertOk();
 
         // 7文字のパスワードで会員登録を実行する
         $response = $this->from(route('register'))
@@ -114,7 +114,7 @@ class Case001RegisterTest extends TestCase
             ]);
 
         // バリデーションメッセージが画面に表示されることを確認する
-        $response->assertSee('パスワードは8文字以上で入力してください');
+        $response->assertSeeText('パスワードは8文字以上で入力してください');
 
         // usersテーブルに会員情報が登録されていないことを確認する
         $this->assertDatabaseCount('users', 0);
@@ -126,7 +126,7 @@ class Case001RegisterTest extends TestCase
         $response = $this->get(route('register'));
 
         // 会員登録ページが正常に表示されることを確認する
-        $response->assertStatus(200);
+        $response->assertOk();
 
         // パスワードと確認用パスワードを不一致にして会員登録を実行する
         $response = $this->from(route('register'))
@@ -139,7 +139,7 @@ class Case001RegisterTest extends TestCase
             ]);
 
         // バリデーションメッセージが画面に表示されることを確認する
-        $response->assertSee('パスワードと一致しません');
+        $response->assertSeeText('パスワードと一致しません');
 
         // usersテーブルに会員情報が登録されていないことを確認する
         $this->assertDatabaseCount('users', 0);
@@ -151,7 +151,7 @@ class Case001RegisterTest extends TestCase
         $response = $this->get(route('register'));
 
         // 会員登録ページが正常に表示されることを確認する
-        $response->assertStatus(200);
+        $response->assertOk();
 
         // 正しい入力値で会員登録を実行する
         $response = $this->post(route('register'), [

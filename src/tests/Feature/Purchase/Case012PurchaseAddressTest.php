@@ -11,10 +11,13 @@ use Database\Seeders\PaymentMethodsSeeder;
 use Database\Seeders\UsersSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Mockery;
 use Tests\TestCase;
 
 /**
  * Case012 配送先変更機能
+ *
+ * 対応要件:
  * - 送付先住所変更画面にて登録した住所が商品購入画面に反映されている
  * - 購入した商品に送付先住所が紐づいて登録される
  */
@@ -24,36 +27,48 @@ class Case012PurchaseAddressTest extends TestCase
 
     public function test_changed_address_is_reflected_on_purchase_page(): void
     {
+        // 配送先変更機能テスト用データを準備する
         $data = $this->preparePurchaseData();
 
+        /** @var \App\Models\User $buyer */
         $buyer = $data['buyer'];
-        $buyItem = $data['buyItem'];
 
-        // 1. ログイン状態にする（verified済みユーザー）
+        /** @var \App\Models\Item $item */
+        $item = $data['item'];
+
+        // 購入者でログインする
         $this->actingAs($buyer);
+        $this->assertAuthenticatedAs($buyer);
 
-        // 2. 送付先住所変更ページ
-        $editResponse = $this->get(route('purchase.address.edit', ['item_id' => $buyItem->id]));
-        $editResponse->assertStatus(200);
+        // 送付先住所変更画面を開く
+        $editResponse = $this->get(route('purchase.address.edit', ['item_id' => $item->id]));
 
-        // 3. 送付先住所変更画面で住所を更新する
+        // 住所変更画面が正常に表示されることを確認する
+        $editResponse->assertOk();
+
+        // 変更後の住所データを用意する
         $addressData = [
             'postal_code' => '123-4567',
             'address' => '東京都千代田区テスト町1-1',
             'building' => 'テストビル101号',
         ];
+
+        // 送付先住所を更新する
         $updateResponse = $this->patch(
-            route('purchase.address.update', ['item_id' => $buyItem->id]),
+            route('purchase.address.update', ['item_id' => $item->id]),
             $addressData
         );
 
-        // 4. 商品購入画面に戻ることを確認
-        $updateResponse->assertRedirect(route('purchase.show', ['item_id' => $buyItem->id]));
+        // 更新後に商品購入画面へ戻ることを確認する
+        $updateResponse->assertRedirect(route('purchase.show', ['item_id' => $item->id]));
 
-        // 5. 商品購入画面に反映されていることを確認
-        $purchaseResponse = $this->get(route('purchase.show', ['item_id' => $buyItem->id]));
-        $purchaseResponse->assertStatus(200);
+        // 商品購入画面を再度開く
+        $purchaseResponse = $this->get(route('purchase.show', ['item_id' => $item->id]));
 
+        // 商品購入画面が正常に表示されることを確認する
+        $purchaseResponse->assertOk();
+
+        // 変更した住所が商品購入画面に表示されていることを確認する
         $purchaseResponse->assertSeeText('123-4567');
         $purchaseResponse->assertSeeText('東京都千代田区テスト町1-1');
         $purchaseResponse->assertSeeText('テストビル101号');
@@ -61,60 +76,63 @@ class Case012PurchaseAddressTest extends TestCase
 
     public function test_changed_address_is_saved_in_purchases_table_when_purchase_is_executed(): void
     {
+        // 配送先変更機能テスト用データを準備する
         $data = $this->preparePurchaseData();
 
+        /** @var \App\Models\User $buyer */
         $buyer = $data['buyer'];
-        $buyItem = $data['buyItem'];
 
-        // ログイン状態にする（verified済みユーザー）
+        /** @var \App\Models\Item $item */
+        $item = $data['item'];
+
+        // 購入者でログインする
         $this->actingAs($buyer);
+        $this->assertAuthenticatedAs($buyer);
 
-        // 変更後住所
+        // 変更後の住所データを用意する
         $addressData = [
             'postal_code' => '123-4567',
             'address' => '東京都千代田区テスト町1-1',
             'building' => 'テストビル101号',
         ];
 
-        // 1) 配送先住所変更（セッションに保存される想定）
+        // 先に配送先住所を変更する
         $addressUpdateResponse = $this->patch(
-            route('purchase.address.update', ['item_id' => $buyItem->id]),
+            route('purchase.address.update', ['item_id' => $item->id]),
             $addressData
         );
 
-        // 購入画面へ戻る
-        $addressUpdateResponse->assertRedirect(route('purchase.show', ['item_id' => $buyItem->id]));
+        // 更新後に商品購入画面へ戻ることを確認する
+        $addressUpdateResponse->assertRedirect(route('purchase.show', ['item_id' => $item->id]));
 
-        // 支払い方法ID（Seeder済みマスタから1件）
-        $paymentMethodId = DB::table('payment_methods')->value('id');
+        // Stripeで使用する支払い方法IDを1件取得する
+        $paymentMethodId = DB::table('payment_methods')
+            ->whereNotNull('stripe_code')
+            ->value('id');
 
-        // 念のため：購入前は purchases にまだ無いことを確認
+        // 購入前は purchases テーブルにまだ登録されていないことを確認する
         $this->assertDatabaseMissing('purchases', [
-            'item_id' => $buyItem->id,
+            'item_id' => $item->id,
         ]);
 
-        // 2) 購入実行
-        // ※ store() の後半で Stripe に進むため、環境によっては 500 になることがある
-        //    ただし Purchase::create() は Stripe 前なので、DB保存確認が目的ならこの後で assertDatabaseHas を行う
-        try {
-            $purchaseStoreResponse = $this->post(
-                route('purchase.store', ['item_id' => $buyItem->id]),
-                [
-                    'payment_method_id' => $paymentMethodId,
-                ]
-            );
+        // Stripeの外部通信をモックする
+        $this->mockStripeCheckoutSession();
 
-            // Stripe SDK 呼び出しで例外が飛ばない環境の場合は、リダイレクトされることを確認
-            $this->assertContains($purchaseStoreResponse->getStatusCode(), [302, 500]);
-        } catch (\Throwable $e) {
-            // Stripe SDK 呼び出しで例外が飛んでも、今回の目的は「Purchase::create() されたか」なので続行
-            // （Purchase::create() は Stripe 呼び出しより前で実行される実装）
-        }
+        // 購入処理を実行する
+        $purchaseStoreResponse = $this->post(
+            route('purchase.store', ['item_id' => $item->id]),
+            [
+                'payment_method_id' => $paymentMethodId,
+            ]
+        );
 
-        // 3) purchases テーブルに変更後住所が保存されていることを確認
+        // Stripeの決済画面URLへリダイレクトされることを確認する
+        $purchaseStoreResponse->assertRedirect('https://checkout.stripe.test/session');
+
+        // purchases テーブルに変更後住所が保存されていることを確認する
         $this->assertDatabaseHas('purchases', [
             'user_id' => $buyer->id,
-            'item_id' => $buyItem->id,
+            'item_id' => $item->id,
             'payment_method_id' => $paymentMethodId,
             'postal_code' => '123-4567',
             'address' => '東京都千代田区テスト町1-1',
@@ -123,51 +141,69 @@ class Case012PurchaseAddressTest extends TestCase
     }
 
     /**
-     * @return array
+     * 配送先変更機能テスト用データを準備する
+     *
+     * @return array{
      *   buyer:\App\Models\User,
-     *   buyItem:\App\Models\Item}
+     *   item:\App\Models\Item
+     * }
      */
     private function preparePurchaseData(): array
     {
-        // マスタ + 指定10商品を投入
-        $this->seed(UsersSeeder::class);
-        $this->seed(ConditionsSeeder::class);
-        $this->seed(CategoriesSeeder::class);
-        $this->seed(PaymentMethodsSeeder::class);
-        $this->seed(ItemsSeeder::class);
-
-        // 購入対象商品（ItemsSeederの固定商品を使う）
-        /** @var \App\Models\Item $buyItem */
-        $buyItem = Item::query()->where('name', 'HDD')->firstOrFail();
-
-        // 商品の出品者とは別ユーザーを購入者にする（自然な状態）
-        /** @var \App\Models\User $buyer */
-        $buyer = User::factory()->create([
-            'email_verified_at' => now(), // verifiedルート対策
+        // マスタデータと指定商品データを投入する
+        $this->seed([
+            UsersSeeder::class,
+            ConditionsSeeder::class,
+            CategoriesSeeder::class,
+            PaymentMethodsSeeder::class,
+            ItemsSeeder::class,
         ]);
 
-        // 初期住所を入れておく
+        // 購入対象商品を取得する
+        /** @var \App\Models\Item $item */
+        $item = Item::query()->where('name', 'HDD')->firstOrFail();
+
+        // 購入者ユーザーを作成する
+        /** @var \App\Models\User $buyer */
+        $buyer = User::factory()->create([
+            'email_verified_at' => now(),
+        ]);
+
+        // 購入者の初期住所を設定する
         $buyer->forceFill([
             'postal_code' => '111-1111',
             'address' => '東京都港区初期町1-1',
             'building' => '初期ビル',
         ])->save();
 
-        // 購入対象商品は他人の商品のままにする
-        if ((int) $buyItem->user_id === (int) $buyer->id) {
+        // 購入対象商品が自分の商品にならないよう調整する
+        if ((int) $item->user_id === (int) $buyer->id) {
             /** @var \App\Models\User $otherSeller */
             $otherSeller = User::factory()->create([
                 'email_verified_at' => now(),
             ]);
 
-            $buyItem->update([
+            $item->update([
                 'user_id' => $otherSeller->id,
             ]);
         }
 
         return [
             'buyer' => $buyer,
-            'buyItem' => $buyItem
+            'item' => $item,
         ];
+    }
+
+    /**
+     * Stripe Checkout Session の作成処理をモックする
+     */
+    private function mockStripeCheckoutSession(): void
+    {
+        Mockery::mock('alias:Stripe\Checkout\Session')
+            ->shouldReceive('create')
+            ->once()
+            ->andReturn((object) [
+                'url' => 'https://checkout.stripe.test/session',
+            ]);
     }
 }

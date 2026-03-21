@@ -33,7 +33,7 @@ class Case005MyListIndexTest extends TestCase
         $response = $this->actingAs($data['user'])
             ->get(route('items.index', ['tab' => 'mylist']));
 
-        $response->assertStatus(200);
+        $response->assertOk();
 
         // いいねした商品は表示
         $response->assertSeeText($data['likedItem']->name);
@@ -49,7 +49,7 @@ class Case005MyListIndexTest extends TestCase
         $response = $this->actingAs($data['user'])
             ->get(route('items.index', ['tab' => 'mylist']));
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertSeeText($data['soldLikedItem']->name);
 
         // Bladeの表示ロジックで「Sold」が表示されることを確認
@@ -63,7 +63,7 @@ class Case005MyListIndexTest extends TestCase
 
         $response = $this->get(route('items.index', ['tab' => 'mylist']));
 
-        $response->assertStatus(200);
+        $response->assertOk();
 
         // Seederの代表商品名が表示されないことを確認
         $response->assertDontSeeText('腕時計');

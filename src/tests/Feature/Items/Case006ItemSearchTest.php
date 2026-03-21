@@ -15,6 +15,8 @@ use Tests\TestCase;
 
 /**
  * Case006 商品検索機能
+ *
+ * 対応要件:
  * - 「商品名」で部分一致検索ができる
  * - 検索状態がマイリストでも保持されている
  */
@@ -33,7 +35,7 @@ class Case006ItemSearchTest extends TestCase
         ]));
 
         // Assert: 正常に表示されることを確認する
-        $response->assertStatus(200);
+        $response->assertOk();
 
         // Assert: 部分一致する商品が表示されることを確認する
         $response->assertSeeText($testData['matchedItem1']->name);
@@ -56,7 +58,7 @@ class Case006ItemSearchTest extends TestCase
         ]));
 
         // Assert: 正常に表示されることを確認する
-        $response->assertStatus(200);
+        $response->assertOk();
 
         // Assert: 検索入力欄にキーワードが保持されていることを確認する
         // ※ Bladeの検索inputが value="{{ request('keyword') }}" 前提
@@ -68,6 +70,20 @@ class Case006ItemSearchTest extends TestCase
     }
 
     /**
+     * 基本データ（Seeder）を投入
+     */
+    private function seedBaseData(): void
+    {
+        $this->seed([
+            CategoriesSeeder::class,
+            ConditionsSeeder::class,
+            PaymentMethodsSeeder::class,
+            UsersSeeder::class,
+            ItemsSeeder::class,
+        ]);
+    }
+
+    /**
      * @return array{
      *   matchedItem1:\App\Models\Item,
      *   matchedItem2:\App\Models\Item,
@@ -76,14 +92,10 @@ class Case006ItemSearchTest extends TestCase
      */
     private function prepareItemSearchTestData(): array
     {
-        // 1. マスタ + 指定商品を投入する
-        $this->seed(UsersSeeder::class);
-        $this->seed(ConditionsSeeder::class);
-        $this->seed(CategoriesSeeder::class);
-        $this->seed(PaymentMethodsSeeder::class);
-        $this->seed(ItemsSeeder::class);
+        // マスタ + 指定商品を投入する
+        $this->seedBaseData();
 
-        // 2. 検索用に使う商品を3件取得する（Seeder投入済みデータを流用）
+        // 検索用に使う商品を3件取得する（Seeder投入済みデータを流用）
         $items = Item::query()->orderBy('id')->take(3)->get()->values();
 
         if ($items->count() < 3) {
@@ -99,12 +111,12 @@ class Case006ItemSearchTest extends TestCase
         /** @var \App\Models\Item $unmatchedItem */
         $unmatchedItem = $items[2];
 
-        // 3. 商品名を検索用に分かりやすく更新する
+        // 商品名を検索用に分かりやすく更新する
         $matchedItem1->update(['name' => 'Armani メンズ時計']);
         $matchedItem2->update(['name' => '壁掛け時計']);
         $unmatchedItem->update(['name' => 'レザーバッグ']);
 
-        // 4. テストで使う値を返す
+        // テストで使う値を返す
         return [
             'matchedItem1' => $matchedItem1->fresh(),
             'matchedItem2' => $matchedItem2->fresh(),
@@ -121,26 +133,22 @@ class Case006ItemSearchTest extends TestCase
      */
     private function prepareMyListSearchTestData(): array
     {
-        // 1. マスタ + 指定商品を投入する
-        $this->seed(UsersSeeder::class);
-        $this->seed(ConditionsSeeder::class);
-        $this->seed(CategoriesSeeder::class);
-        $this->seed(PaymentMethodsSeeder::class);
-        $this->seed(ItemsSeeder::class);
+        // マスタ + 指定商品を投入する
+        $this->seedBaseData();
 
-        // 2. ログインユーザー（verified）を作成する
+        // ログインユーザー（verified）を作成する
         /** @var \App\Models\User $loginUser */
         $loginUser = User::factory()->create([
             'email_verified_at' => now(),
         ]);
 
-        // 3. 他人の出品者ユーザーを作成する（自分の商品除外に引っかからないようにする）
+        // 他人の出品者ユーザーを作成する（自分の商品除外に引っかからないようにする）
         /** @var \App\Models\User $otherSeller */
         $otherSeller = User::factory()->create([
             'email_verified_at' => now(),
         ]);
 
-        // 4. マイリスト検索用に使う商品を2件取得する（Seeder投入済みデータを流用）
+        // マイリスト検索用に使う商品を2件取得する（Seeder投入済みデータを流用）
         $items = Item::query()->orderBy('id')->take(2)->get()->values();
 
         if ($items->count() < 2) {
@@ -153,7 +161,7 @@ class Case006ItemSearchTest extends TestCase
         /** @var \App\Models\Item $unmatchedLikedItem */
         $unmatchedLikedItem = $items[1];
 
-        // 5. どちらも他人の商品にして、商品名を検索用に更新する
+        // どちらも他人の商品にして、商品名を検索用に更新する
         $matchedLikedItem->update([
             'user_id' => $otherSeller->id,
             'name' => 'いいね済みの時計',
@@ -164,19 +172,23 @@ class Case006ItemSearchTest extends TestCase
             'name' => 'いいね済みのバッグ',
         ]);
 
-        // 6. いいねを付与する（両方ともマイリスト対象）
+        // いいねを付与する（両方ともマイリスト対象）
         DB::table('likes')->insert([
             [
                 'user_id' => $loginUser->id,
                 'item_id' => $matchedLikedItem->id,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'user_id' => $loginUser->id,
                 'item_id' => $unmatchedLikedItem->id,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
         ]);
 
-        // 7. テストで使う値を返す
+        // テストで使う値を返す
         return [
             'user' => $loginUser,
             'matchedLikedItem' => $matchedLikedItem->fresh(),
